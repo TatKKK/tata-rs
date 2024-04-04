@@ -1,0 +1,23 @@
+<div class="user-card">
+  <div class="card-element">
+    <img [src]="'https://localhost:7042' + patient?.ImageUrl" alt="Patient image" class="user-image">
+    <h2><b>მომხმარებელი</b></h2>
+  </div>
+  <div class="card-element">
+    <p>პირადი ნომერი</p>
+    <span>{{patient.IdNumber}} </span>
+  </div>
+  <div class="card-element">
+    <p>Email:</p>
+    <span>{{patient.Email}} </span>
+  </div>
+  <div class="card-element">
+    <a>
+      <h4>პაროლის შეცვლა</h4>
+    </a>
+  </div>
+  <div class="card-element">
+    <h4> დაჯავშნილია</h4>
+    <span> ({{getToTal()}} )</span>
+  </div>
+</div>

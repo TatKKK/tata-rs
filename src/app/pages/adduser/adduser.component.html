@@ -1,0 +1,47 @@
+<div class="form-container">
+  
+    <form  [formGroup]="this.userForm" (ngSubmit)="addUser()">
+        <h2>რეგისტრაცია</h2>
+        <div class="role-switcher">
+            <label>
+                <input type="radio" formControlName="Discriminator" value="patient" > პაციენტი
+            </label>
+            <label>
+                <input type="radio" formControlName="Discriminator" value="doctor"> ექიმი
+            </label>
+        </div>
+       <div class="form-grid">
+        <div class="input-group">
+            <label for="Fname">სახელი</label>
+            <input type="text" formControlName="Fname" placeholder="მინიმუმ 5 სიმბოლო">
+        </div>
+        <div class="input-group">
+            <label for="lastname">გვარი</label>
+            <input type="text" formControlName="Lname" placeholder="">
+        </div>
+        <div class="input-group">
+            <label for="image">Image</label>
+            <input type="file" id="Image" (change)="onFileChange($event)" />
+
+          </div>          
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" formControlName="Email" placeholder="">
+        </div>
+        <div class="input-group">
+            <label for="idnumber">პირადი ნომერი</label>
+            <input type="text" formControlName="IdNumber" placeholder="00000000000">
+        </div>
+        <div class="input-group">
+            <label for="password">პაროლი</label>
+            <input type="password" formControlName="Password" placeholder="მინიმუმ 8 სიმბოლო @,7">
+        </div>
+        <!-- <div class="input-group"  *ngIf="userForm.get('Discriminator')?.value === 'doctor'">
+            <label for="category">Category</label>
+            <input type="text" formControlName="Category" placeholder="">
+        </div> -->
+       </div>
+
+        <button type="submit" class="submit-btn" [disabled]="!userForm.valid">რეგისტრაცია</button>      
+    </form>
+</div>

@@ -1,0 +1,31 @@
+
+    <div class="user-card">
+        <div class="section-1">
+            <img [src]="'https://localhost:7042' + doctor?.ImageUrl" alt="Doctor image" class="user-image">
+            <div class="section-1-data">
+                <h2 class="doctor-name">{{ doctor?.Fname }} {{ doctor?.Lname }}</h2>
+                <span>{{doctor?.Category}} </span>
+                <div class="rating">
+                  <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
+                    <i class="star" [class.filled]="filled">&#9733;</i>
+                  </span>
+                </div>  
+            </div>
+        </div>
+   <div class="section-2">
+    <div *ngIf="doctor?.Experiences?.length" class="experiences">
+      <ul>
+        <li *ngFor="let experience of doctor.Experiences" class="experience-item">      
+            <h4> <span>
+              {{ experience.StartDate | date: 'y' }} - 
+            {{ experience.EndDate ? (experience.EndDate | date: 'y') : 'ამჟამად' }}
+            </span>,           
+          {{ experience.CompanyName }}- {{ experience.Role }} {{ experience.Description }}
+            </h4>         
+        </li>
+      </ul>
+    </div>   
+     
+      <!-- <pre>{{ doctor | json }}</pre> -->  
+    
+    </div> 

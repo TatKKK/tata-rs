@@ -1,0 +1,9 @@
+    <h2 mat-dialog-title><span class="red">დასაჯავშნად გთხოვთ გაიაროთ</span> <br>
+        ავტორიზაცია ან რეგისტრაცია</h2>
+    <mat-dialog-actions>
+        <a mat-raised-button color="var(--color-primary)" 
+        (click)="navigateAndClose('/')">Login</a>
+      <a mat-button mat-raised-button color="accent"
+        (click)="navigateAndClose('/addPatient')">Register</a>
+      
+    </mat-dialog-actions>

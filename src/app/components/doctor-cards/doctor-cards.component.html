@@ -1,0 +1,37 @@
+<div class="cards-container">
+  <div *ngIf="filteredDoctors.length === 0" class="no-data-message">
+    მონაცემები არ მოიძებნა
+  </div>
+
+  <div class="card" *ngFor="let doctor of filteredDoctors" (click)="handleClick(doctor, $event)">
+
+  <div class="card-left-icon">
+    <fa-icon [icon]="faEye"></fa-icon>
+    <span>{{doctor.ViewCount}} </span>
+  </div>
+  <div class="card-right-icon">
+    <img src="../../../assets/pin.png" alt="pin">
+  </div>
+
+  <img [src]="'https://localhost:7042' + doctor.ImageUrl" alt="ar gaixsna" class="card__image">
+
+  <div class="card__info">
+    <h2 class="card__title">{{ doctor.Fname + ' ' + doctor.Lname }} </h2>
+    <p class="card__description">{{doctor.Category}}</p>
+    <div class="rating">
+      <span *ngFor="let filled of getStars(doctor.Score); let i = index">
+        <i class="star" [class.filled]="filled">&#9733;</i>
+      </span>
+    </div>
+    <span class="card__link" >
+      მიღებაზე ჩაწერა<fa-icon [icon]="faAngleRight" class="doc-category-i"></fa-icon> </span>
+  </div>
+  </div>
+</div>
+
+<div class="load-more-doctors" *ngIf="filteredDoctors.length > 0">
+  <button (click)="loadNextPage()" [disabled]="currentPage * pageSize >= totalCount">
+    <span>სრულ</span><span class="underline-text">ად ნახვა</span>
+  </button>
+
+</div>

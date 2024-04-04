@@ -1,0 +1,10 @@
+<form #appointmentForm="ngForm">
+  <div class="p-field">
+    <label for="Notes">აღწერა</label>
+    <textarea id="Notes" [(ngModel)]="this.notes" name="Notes" required pInputTextarea></textarea>
+  </div>
+</form>
+<p-footer>
+  <button type="button" pButton label="Cancel" (click)="display=false"></button>
+  <button type="button" pButton label="Submit" (click)="onSubmit()" autoFocus></button>
+</p-footer>

@@ -1,0 +1,12 @@
+            <div class="container-content">
+                <app-doctor-general-card *ngIf="!isAdmin && doctor" [doctor]="doctor" ></app-doctor-general-card>
+                <app-doctor-admin *ngIf="isAdmin && doctor" [doctor]="doctor"></app-doctor-admin>
+                
+                <app-booking-calendar *ngIf="doctorId &&Id !==null" [doctorId]="doctorId"
+                [appointments]="appointments" [id]="Id"></app-booking-calendar>
+
+                 <app-booking-calendar *ngIf="doctorId" [doctorId]="doctorId"
+                [appointments]="appointments"></app-booking-calendar>
+                
+            </div>        
+    

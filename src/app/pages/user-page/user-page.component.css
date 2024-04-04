@@ -1,0 +1,39 @@
+.container{
+    display:flex;
+    flex-wrap: nowrap;
+    padding:50px 0;
+    gap:50px;
+}
+.app-sidebar{
+    flex:1;
+}
+.user-info{
+    flex:1;
+}
+.booking-calendar{
+    flex:2;
+}
+
+.user-card .card-element:first-child{
+    color:var(--color-active);   
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size:18px;
+  }
+  .patient-info p{
+    margin: 10px 0;
+  }
+  .card-element{
+    text-align:left;
+  }
+  .card-element h2{
+    font-size:22x;
+    color:var(--color-active);
+    font-weight:700;
+  }
+  .card-element span{
+    color:var(--color-primary);
+    opacity:30%;
+    font-size:16px;
+  }

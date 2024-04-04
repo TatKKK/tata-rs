@@ -1,0 +1,91 @@
+
+.container{
+    position:relative;
+}
+.table-container{
+    max-height:500px;
+    overflow-y: auto;
+    border-right:10px solid #ECF2F8;
+    border: 1px solid #ECF2F8
+}
+.table-container thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10; 
+    background: #F0FAFF;
+    border-bottom: 1px solid var(--color-border-light);
+    padding:20px;
+  }
+
+.doc-list{
+    width:80%;
+    border-collapse:collapse;
+  }
+  .doctor-image {
+    width: 3em;
+    height: 3em;
+    border-radius:50%;
+  }
+    th, td {
+      text-align: left;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--color-border-light);
+    }
+    
+    th {
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;  
+  background: #F0FAFF;
+  border-bottom: 1px solid var(--color-border-light);
+  padding:20px;
+    }
+  
+    td{
+
+  font-size: 1em;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+    }
+    
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%; 
+    }
+    
+    .edit-button, .delete-button {
+      border: none;
+      cursor: pointer;
+      margin-right: 8px;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+    }
+    .edit-button{
+      background: #DAFAEE;
+    }
+    .delete-button{
+      background-color: #FF93A6;
+    }
+    
+    .edit-button:hover, .delete-button:hover {
+      opacity: 0.7;
+    }
+  
+    
+  .doc-category-list thead th:nth-child(3) {
+    text-align: center;
+  }
+  
+  
+  .doc-category-list tbody td:nth-child(3) {
+    text-align: center;
+  }
+  .doc-category-list{
+    width:100%;
+  }

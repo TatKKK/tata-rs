@@ -1,0 +1,41 @@
+<div class="auth" *ngIf="showAuth">
+    <a href="#" class="auth__link auth__link--active" (click)="toggleLoginForm(); $event.preventDefault()">ავტორიზაცია</a>
+    <span>/</span>
+    <a routerLink="/addPatient" class="auth__link">რეგისტრაცია</a>
+</div>
+<!-- <p *ngIf="this.userRole === 'admin'"> AAAAAAAAAAAAAAAAA</p> -->
+<div *ngIf="isLoggedIn" class="user-greeting">
+  <img *ngIf = "userRole === 'admin'"
+  [src]="'https://localhost:7042' + userImageUrl" alt="Admin image"  
+  class="patient-image" (click)="goToHomePage()">
+
+  <img *ngIf = "userRole !== 'admin'"
+  [src]="'https://localhost:7042' + userImageUrl" alt="User image"  
+  class="patient-image" (click)="goToUserPage()">
+  <!-- <span> {{this.userName}}</span> -->
+  <span  (click)="goToUserPage()"> {{this.userRole}}</span>
+  <a routerLink="/" (click)="logout()"> Logout</a>
+</div>
+<div *ngIf="showLoginForm" class="login-popup-wrapper" (click)="closeLoginForm()">
+    <div class="login-container" (click)="$event.stopPropagation()">
+        <form class="login-form" #loginForm="ngForm" (ngSubmit)="authenticate()">
+          <h2 class="title">ავტორიზაცია</h2> 
+         
+            <div class="input-group">
+              <input type="text" id="email" name="email" placeholder="მეილი / მობილური ნომერი" [(ngModel)]="login.email" required> 
+            </div>
+            <div class="input-group">
+              <input type="password" id="password" name="password" placeholder="პაროლი"[(ngModel)]="login.password" required> 
+              <div class="text-mutted"><a routerLink="/resetPassword"
+                (click)="closeLoginForm()"><span> პაროლის აღდგენა</span></a></div>
+            </div>
+            <div class="input-group">
+              <button type="submit" [disabled]="!loginForm.valid" class="login-button">შესვლა</button>
+            </div>
+     
+        </form>
+        
+      </div>   
+</div>
+
+

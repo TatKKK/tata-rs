@@ -1,0 +1,268 @@
+
+.weekdays {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ecf2f8;
+  padding: 15px 0;
+}
+
+.day-off {
+  background: #8dc1f5;
+}
+
+/*----update */
+
+
+.hour-label,.date-label,.timeslot {
+  width: 100px; 
+  height: 60px; 
+  border: 1px solid #ecf2f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex:1;
+}
+.timeslot{
+  border-radius:7px;
+}
+.date-label{
+  width:100px;
+  border:none;
+}
+.date-row, .hour-row {
+  display: flex;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+}
+.my-booking{
+  /* background: #DAFAEE; */
+  background-color: blue;
+}
+
+.booked {
+  background-color: #ff93a6;
+}
+
+
+.calendar .date-row .hour-label:first-child {
+  width: 100px;
+}
+
+
+.navigation-weeks button{
+  border: none;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 10px 0px #0533540d;
+  cursor: pointer;
+  margin: 0 15px;
+  transform: 0.3s ease-in-out;
+  width: 21px;
+  height: 21px;
+}
+
+.navigation-weeks button:first-child {
+  background-color: transparent;
+}
+
+.date-label{
+  background-color: #ecf2f8;
+  padding: 15px 0;
+}
+.date-row div:first-child{
+  background-color: #ecf2f8;
+  border:none;
+}
+
+
+.navigation-controls {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-bottom: 25px;
+}
+.navigation-controls span:first-child {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21.6px;
+  text-align: left;
+  border: none;
+  color: var(--color-primary);
+  margin-right:30px;
+}
+
+.navigation-controls button {
+  border: none;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 10px 0px #0533540d;
+  cursor: pointer;
+  margin: 0 15px;
+  transform: 0.3s ease-in-out;
+}
+
+.navigation-controls button {
+  width: 40px;
+  height: 40px;
+}
+.navigation-controls button:focus,
+.navigation-controls button:hover
+ {
+  border: 1px solid var(--color-active);
+}
+
+.fa-icon {
+  width: 100%;
+  justify-self: center;
+  align-self: center;
+}
+.navigation-controls span {
+  border: 1px solid #18a4e14d;
+  padding: 13px 30px;
+  border-radius: 25px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: var(--color-active);
+}
+
+
+.navigation-controls {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-bottom: 25px;
+}
+.navigation-controls span:first-child {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21.6px;
+  text-align: left;
+  border: none;
+  color: var(--color-primary);
+  margin-right:30px;
+}
+
+.navigation-controls button,
+.calendar-controls button {
+  border: none;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 10px 0px #0533540d;
+  cursor: pointer;
+  margin: 0 15px;
+  transform: 0.3s ease-in-out;
+}
+.calendar-container {
+  padding: 50px 0;
+  margin-top:50px;
+}
+.calendar {
+  max-width: 100%;
+  box-shadow: 0px 4px 30px 0px #0533540d;
+}
+.calendar-controls {
+  height: 100%;
+}
+.date-label span{
+  color:var(--color-active);
+}
+
+.weekend{
+  background: #FFFFF5;
+}
+.timeslot a{
+  border:none;
+  background-color: transparent;
+  
+line-height: 16.8px;
+opacity:0.3;
+transition: 0.3s ease;
+}
+
+
+.timeslot a:hover {
+  color: #3ACF99;
+}
+
+.timeslot span{
+  color:#3ACF99;
+}
+.date-label span{
+  margin-right:5px;
+}
+
+
+/*--- Buttons */
+.calendar a:hover{
+  cursor:pointer;
+}
+.action-buttons{
+  display:flex;
+  align-items:start;
+  justify-content: end;
+  gap:30px;
+  margin-top:30px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 13px 30px;
+  border-radius: 50px;
+  font-size:18px;
+
+  transition: background-color 0.3s;
+}
+.button svg {
+  margin-right: 10px; 
+}
+
+
+.edit-button {
+  background-color: #ECF2F8; 
+  color: var(--color-active);
+}
+
+.edit-button:hover {
+  background-color:  #8fc3f7; 
+}
+
+.delete-button {
+  background-color: #FF93A6;
+  color:white;
+}
+
+.delete-button:hover {
+  background-color: #fb627e;
+  color:white;
+}
+
+.edit-with-span{
+  display:flex;
+  flex-direction: column;
+  gap:5px;
+}
+
+.text-mutted{
+  padding-left: 20px;
+  font-size: 16px;
+  line-height: 19.2px;
+  opacity:30%; 
+  }

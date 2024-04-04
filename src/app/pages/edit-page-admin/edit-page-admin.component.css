@@ -1,0 +1,9 @@
+.grid {
+  display: grid;
+  gap: 50px;
+  grid-template-columns: 1fr 1.3fr;
+  grid-template-rows: auto auto;
+}
+.container > *:first-child {
+  grid-column: 1 / -1;
+}

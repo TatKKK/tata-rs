@@ -1,0 +1,8 @@
+<div class="container">
+    <p-toast position="top-left" key="tl"></p-toast>
+    <app-admin-header></app-admin-header>
+    <div class="grid">
+        <app-doctor-admin [doctor]="doctor"></app-doctor-admin>
+    <app-booking-calendar *ngIf="doctorId !== null" [doctorId]="doctorId" [appointments]="appointments"></app-booking-calendar>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="user-card">
+ 
+  <div class="card-element">
+    <img [src]="'https://localhost:7042' + doctor?.ImageUrl" alt="Doctor image" class="user-image">
+
+    <h4 class="doc-name">{{ doctor?.Fname }} {{ doctor?.Lname }}</h4>
+    <span><b>ექიმი</b></span>
+    <h4>{{doctor?.Category}}</h4>
+    <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
+      <i class="star" [class.filled]="filled">&#9733;</i>
+    </span>
+  </div>
+  <div class="card-element">
+  </div>
+  <div class="card-element">
+    <h4> პირადი ნომერი</h4>
+    <span> {{doctor?.IdNumber}} </span>
+  </div>
+  <div class="card-element">
+    <h4>Email:</h4>
+    <span>{{doctor?.Email}} </span>
+  </div>
+  <div class="card-element">
+    <a>
+      <h4>პაროლის შეცვლა</h4>
+    </a>
+  </div>
+  <div class="card-element">
+    <h4> დაჯავშნილია</h4>
+    <span> ({{getTotal()}} )</span>
+  </div>
+
+
+  <a routerLink="/addDoctor">დამატება</a>
+
+</div>

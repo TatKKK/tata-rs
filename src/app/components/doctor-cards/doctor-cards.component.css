@@ -1,0 +1,122 @@
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .card {
+    border:1px solid var(--color-border-light);
+    border-radius: 10px;
+    text-align: center;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%;
+    height: 100%;
+    background-color:#FFFFFF;
+    transition:0.3s ease-in;
+    position:relative;
+  }
+  .card:hover{
+    box-shadow: 0 2px 4px 0 rgba(51, 118, 199, 0.2), 0 3px 10px 0 rgba(148, 171, 233, 0.19);  
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  cursor:pointer;
+}
+      
+  .card__image {
+    border-radius: 50%;
+    width: 137px;
+    height: 137px;
+   object-fit:cover;
+    margin-bottom:13px;
+  } 
+
+  .card__title {
+    font-size: clamp(0.875rem, 2vw, 1.125rem);
+    margin-bottom:0;
+  }
+  
+  .card__description {
+    color: var(--primaryColor);
+    opacity:25%;
+    margin-bottom:0;
+  }
+
+  .card__link{
+    background-color: var(--color-border-light);
+    padding: 10px 20px;
+    border-radius: 24px;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    transition:0.3s ease-in-out;
+  }
+  .card__link:hover{
+    background-color: var(--color-secondary);
+    border:1px solid var(--color-active);
+    color:var(--color-active);
+  }
+  .card__info{
+    display:flex;
+    flex-direction: column;
+    gap:15px;
+  }
+ 
+  .card-left-icon{
+    position:absolute;
+    top:15px;
+    left:15px;
+    display:flex;
+    align-items:center;
+    background-color:var(--color-border-light);
+    padding: 5px 15px;
+    border-radius: 20px;
+    gap:9px;
+  }
+  .card-left-icon i{
+    color:var(--primaryColor)
+  }
+  
+  .card-right-icon{
+    position:absolute;
+    top:0;
+    right:0;
+    padding:10px;
+  }
+  .load-more-doctors{
+    padding:0 50px;
+    margin-top:20px;
+    display:flex;
+    justify-content: end;
+  }
+  .load-more-doctors button{
+    border:none;
+    background-color: transparent;
+  }
+  .load-more-doctors button:hover{
+    cursor: pointer;
+  }
+  .load-more-doctors button span{
+font-size: 1.2rem;
+line-height: 17px;
+letter-spacing: 0em;
+  }
+  .load-more-doctors a{
+    background-color: var(--border);
+    color:var(--primaryColor);
+    padding:10px;
+    border:none;
+    line-height:30px;
+  }
+  
+  .underline-text {
+    text-decoration: underline;
+  }
+  .no-data-message{
+    font-size:1rem;
+  }

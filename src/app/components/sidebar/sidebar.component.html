@@ -1,0 +1,17 @@
+
+    <div class="sidebar-title">
+        <h2>კატეგორიები</h2>
+    </div>
+ <div *ngFor="let category of displayedCategories">
+    <div class="doc-category">
+     <a [routerLink]="['/doctors', category.key]"> <span class="category-count">({{ category.value }})</span>
+        <span class="category-name">{{ category.key }}</span>
+        <fa-icon [icon]="faAngleRight" class="doc-category-i"></fa-icon>
+    </a>
+    </div>
+  </div>
+  <div class="load-more-sidebar">
+    <button (click)="loadMore()" > სრულად ნახვა  <fa-icon [icon]="faAngleDown" class="doc-category-i"></fa-icon></button>
+</div>
+
+ 

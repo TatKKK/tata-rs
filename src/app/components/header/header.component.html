@@ -1,0 +1,43 @@
+<div class="container header">
+    <a class="logo" routerLink="/"> 
+        <img src="../../../assets/logo 1.png" alt="logo" class="logo__image">
+        კლინიკა
+    </a>
+    <nav class="nav">
+        <ul class="nav__list">
+            <li class="nav__item"><a href="#" >ექიმები</a></li>
+            <li class="nav__item"><a href="#" >კლინიკები</a></li>
+            <li class="nav__item"><a href="#" >ანოტაციები</a></li>
+            <li class="nav__item"><a href="#" >სერვისები</a></li>
+            <li class="nav__item"><a href="#" >მედიკამენტები</a></li>
+            <li class="nav__item"><a href="#">კონტაქტი</a></li>
+        </ul>     
+    </nav>
+    <app-login></app-login>
+    <a href="/" class="lang-switch">ENG</a>
+</div>
+<div class="header-bottom">
+  <div class="container">
+    <div class="search-bar">
+        <div class="contact-info">
+            <div class="phone">
+                <img src="../../../assets/call.png" alt="Phone Icon">
+                <span>032 2 100 100</span>
+            </div>
+            <div class="address">
+                <img src="../../../assets/location.png" alt="Location Icon">
+                <span>მერაბ კოსტავას N10</span>
+            </div>
+        </div>
+        <div class="search">
+            <input type="text" placeholder="მოძებნე ექიმი სახელით" #filterName>
+            <input type="text" placeholder="მოძებნე ექიმი სპეციალობით" #filterCategory >
+            <button type="button" (click)="(filterResults(filterName.value, filterCategory.value))">
+                <img src="../../../assets/search.png" alt="Search Icon">
+            </button>
+            <span *ngIf="!isDataFound" class="no-data">No data found</span>       
+        </div>
+       
+    </div>
+  </div>
+</div>

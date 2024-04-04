@@ -1,0 +1,12 @@
+<main class="main">
+  <app-header></app-header>
+  <app-admin-header *ngIf="userRole === 'admin'"></app-admin-header>
+  
+  
+<router-outlet />
+
+
+
+</main>
+
+<app-footer></app-footer>
