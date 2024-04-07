@@ -9,7 +9,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { RegistrationSuccessComponent } from '../../dialogs/registration-success/registration-success.component';
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { MatDialogComponent } from '../../dialogs/mat-dialog/mat-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
 
 

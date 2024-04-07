@@ -36,6 +36,8 @@ public appointments:Appointment[]=[];
     this.currentPatientId.next(patientId)
   }
 
+  
+
   private apiUrl = "https://localhost:7042/api/Appointments";
 
   createAppointment(newAppointment:Appointment): Observable<Appointment> {

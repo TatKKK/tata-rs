@@ -10,6 +10,12 @@
         <i class="star" [class.filled]="filled">&#9733;</i>
       </span> -->
     </div>
+    <h2 *ngIf="this.role=== 'doctor'">{{doctor?.Category}} </h2>
+    <div class="rating" *ngIf="this.role=== 'doctor'">
+      <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
+        <i class="star" [class.filled]="filled">&#9733;</i>
+      </span>
+    </div>
     <div class="card-element">
     </div>
     <div class="card-element">
@@ -28,10 +34,6 @@
     <div class="card-element">
       <h4> დაჯავშნილია</h4>
       <span> ({{totalAppointments}} )</span>
-      <div>
-        Total Appointments: {{ totalAppointments }} (Debug: {{ totalAppointments | json }})
-      </div>
-      
-    </div>
+        </div>
   
   </div>

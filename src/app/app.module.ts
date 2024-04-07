@@ -18,10 +18,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogComponent } from './dialogs/mat-dialog/mat-dialog.component';
 import { DoctorCardsComponent } from './components/doctor-cards/doctor-cards.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { GologComponent } from './dialogs/golog/golog.component';
 import { DoctorCategoryListComponent } from './components/doctor-category-list/doctor-category-list.component';
 import { AddPatientComponent } from './pages/add-patient/add-patient.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
@@ -33,7 +31,6 @@ import { Router, RouterModule } from '@angular/router';
 import { DoctorAdminComponent } from './components/doctor-admin/doctor-admin.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RegistrationSuccessComponent } from './dialogs/registration-success/registration-success.component';
-
 import { DoctorsListAdminComponent } from './pages/doctors-list-admin/doctors-list-admin.component';
 import { AdminHeaderComponent } from './components/admin-header/admin-header.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
@@ -52,6 +49,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AddUserAdminComponent } from './pages/add-user-admin/add-user-admin.component';
 
 @NgModule({
   declarations: [
@@ -60,10 +59,8 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
     HomeComponent,
     FooterComponent,
    AdduserComponent,
-   MatDialogComponent,
-   DoctorCardsComponent,
+     DoctorCardsComponent,
    SidebarComponent,
-   GologComponent,
    DoctorCategoryListComponent,
    AddPatientComponent,
    UserPageComponent,
@@ -74,16 +71,15 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
    DoctorGeneralCardComponent,
    DoctorAdminComponent,
    RegistrationSuccessComponent,
-
    DoctorsListAdminComponent,
    AdminHeaderComponent,
    PageNotFoundComponent,
    EditPageAdminComponent,
    UserInfoCardComponent,
-
    LoginPromptComponent,
    BookingDialogComponent,
-   ResetPasswordComponent
+   ResetPasswordComponent,
+   AddUserAdminComponent
    
   ],
   imports: [
@@ -108,7 +104,8 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
     DialogModule,
     ButtonModule,
     ScrollPanelModule,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule
 
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'ka-GE' }, 

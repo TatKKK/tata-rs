@@ -88,7 +88,7 @@
   }
   
   body {
-    font-size:16px!important;
+    font-size:14px!important;
     line-height: 21.6px;
     font-family: 'FiraGO', sans-serif!important; 
     font-weight: 400; 
@@ -110,7 +110,7 @@
 }
 
 .container {
-  width: calc(100% - 10vw);
+  width: calc(100% - 5vw);
   margin: 0 auto;
 }
 .flex{
@@ -296,5 +296,118 @@ a{
   margin-bottom:0;
 } */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/*------- primeng dialogs  aq tu ar chavsvi ar muShaobs */
+
+/* 
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css"; */
+
+.p-dialog .p-dialog-header .p-dialog-title {
+  color:var(--color-red);
+  font-size: 1em;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+.p-dialog-header{
+  justify-content: center;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+.p-button-link{
+  padding:5px;
+}
+.login span{
+  font-size: 1em;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: center;
+  color:var(--color-primary);
+}
+
+.p-dialog .p-dialog-content {
+  /* background: #ffffff; */
+  color: var(--color-primary);
+  /* padding: 0 1.5rem 2rem 1.5rem; */
+  display: flex;
+  justify-content: center;
+}
+div.p-dialog-mask {
+	
+	pointer-events: auto;
+}
+
+
+.p-dialog .p-dialog-header-icons{
+  display:none;
+}
+
+
+.p-dialog.p-confirm-dialog .p-confirm-dialog-message {
+  margin-left:0;
+  color:#3ACF99;
+  font-weight:700;
+  font-size:1rem;
+  padding-bottom:0;
+}
+.p-dialog .p-dialog-footer button {
+  margin: 0 0.5rem 0 0;
+  width: auto;
+  background: none;
+  border: none;
+}
+.p-dialog .p-dialog-footer button:active{
+  border:none;
+ 
+}
+.p-button:focus{
+  box-shadow:none;
+}
+
+.p-dialog .p-dialog-footer {
+  
+  padding: 0 1rem 1rem 1rem;
+  text-align: center;
+ 
+}
+
+.p-dialog .p-dialog-content {
+ padding-bottom:0;
+}
+.p-icon-wrapper {
+  display: none;
+}
+
+
+.custom-ngBtn .p-button-label {
+  font-family: 'FiraGO', sans-serif;
+  font-size: 1rem; 
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
+  color: #FFFFFF!important;
+}
+
+.app-book .p-dialog-header .p-dialog-title {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.app-book .p-dialog .p-dialog-content {
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.app-book .p-footer {
+  display: flex;
+  justify-content: end;
+  padding:15px 0;
+}
+.app-book  .ng-star-inserted{
+  width:100%;
+}

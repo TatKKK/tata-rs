@@ -1,9 +1,15 @@
-<p> aავტორიზაცია ან რეგისტრაცია</p>          
-          <p-footer>
-        <p-button label="Login" [link]="true" (click)="navigateAndClose('/')"
-         [ngStyle]="{color: 'var(--pink-500)'}"></p-button>
-        <p-button label="Register" [link]="true" (click)="navigateAndClose('/addPatient')"
-        [ngStyle]="{color: 'var(--pink-500)'}"></p-button>
-    </p-footer>
-    
-  
+      
+
+  <div class="login" (click)="closeOnOuterClick()">
+    <p-dialog header="Header" [(visible)]="visible" [ngStyle]="{width: '50vw', color:'red-500'} " [blockScroll]=true 
+    [modal]="true" [dismissableMask]="true" (click)="$event.stopPropagation()">
+      <p class="red" [style]="{color:'red'}">
+        დასაჯავშნად გთხოვთ გაიაროთ 
+      </p>         
+  </p-dialog>
+  <p-footer>
+    <p-button label="ავტორიზაცია" [link]="true" (click)="navigateAndClose('/')" ></p-button> 
+    <p-button label="ან" [link]="true"></p-button> 
+  <p-button label="რეგისტრაცია" [link]="true" (click)="navigateAndClose('/addPatient')"></p-button>
+  </p-footer>
+  </div>

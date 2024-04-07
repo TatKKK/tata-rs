@@ -3,6 +3,7 @@ import { Login } from '../../models/user.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -25,8 +26,11 @@ userImageUrl:string='';
 userRole:string='';
 
   showAuth=true;
+userImageUrl$!: Observable<string>;
 
   ngOnInit(): void {
+    this.userImageUrl$ = this.authService.getImageUrl();
+
     this.authService.isLoggedIn().subscribe(loggedInStatus => {
       this.isLoggedIn = loggedInStatus;
       if (this.isLoggedIn) {
@@ -50,10 +54,15 @@ constructor(private router:Router,
 authenticate(): void {
   this.authService.authenticate(this.login).subscribe({
     next: (res) => {
+      console.log(this.login.email, 'emaili???');
       this.userImageUrl = this.authService.getImageUrlFromToken(res.AccessToken) || 'defaultImageUrl';
       this.userName = this.authService.getUserNameFromToken(res.AccessToken) || 'Anonymous User';
       this.userRole=this.authService.getUserRole();  
       this.isLoggedIn=this.authService.isLoggedInSync();
+      if(this.login.email){
+        this.authService.setUserEmail(this.login.email);
+      }
+    
       if (this.isLoggedIn) {
         this.showLoginForm = false;
         this.showAuth = false;
@@ -72,7 +81,9 @@ goToHomePage():void{
   this.router.navigate(['/']);
 }
 goToUserPage():void{
-  this.router.navigate(['/userPage', this.login.email]);
+  this.authService.getUserEmail().subscribe(email => {
+    this.router.navigate(['/userPage', email]);
+  });
 }
 
 

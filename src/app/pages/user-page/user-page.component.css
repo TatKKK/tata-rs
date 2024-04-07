@@ -29,7 +29,7 @@
   }
   .card-element h2{
     font-size:22x;
-    color:var(--color-active);
+    color:var(--color-primary);
     font-weight:700;
   }
   .card-element span{

@@ -8,10 +8,14 @@
   <img *ngIf = "userRole === 'admin'"
   [src]="'https://localhost:7042' + userImageUrl" alt="Admin image"  
   class="patient-image" (click)="goToHomePage()">
-
-  <img *ngIf = "userRole !== 'admin'"
-  [src]="'https://localhost:7042' + userImageUrl" alt="User image"  
-  class="patient-image" (click)="goToUserPage()">
+  <ng-container *ngIf="userRole !== 'admin'">
+    <img *ngIf="userImageUrl$ | async as userImageUrl"
+         [src]="'https://localhost:7042' + userImageUrl" 
+         alt="User Image" 
+         (click)="goToUserPage()">
+  </ng-container>
+  
+ 
   <!-- <span> {{this.userName}}</span> -->
   <span  (click)="goToUserPage()"> {{this.userRole}}</span>
   <a routerLink="/" (click)="logout()"> Logout</a>

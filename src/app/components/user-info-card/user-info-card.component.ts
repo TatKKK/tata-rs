@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { User } from '../../models/user.model';
 import { AppointmentsService } from '../../services/appointments.service';
 import { AuthService } from '../../services/auth/auth.service';
-
+import { Doctor } from '../../models/doctor.model';
+import { DoctorsService } from '../../services/doctors.service';
 
 @Component({
   selector: 'app-user-info-card',
@@ -15,36 +16,29 @@ export class UserInfoCardComponent implements OnInit {
   @Input() user!:User;
   @Input() totalAppointments!:number;
 
+  doctor!:Doctor 
+
+
   role:String='';
   
- 
-
-  constructor(public appointmentsService:AppointmentsService,
-    private authService:AuthService ){
+   constructor(
+    public appointmentsService:AppointmentsService,
+    private authService:AuthService ,
+    private doctorsService:DoctorsService
+  ){
   }
   ngOnInit(): void {
     this.role=this.authService.getUserRole();
     if (this.user&&this.userId !==null && this. userId !== undefined) {
       this.appointmentsService.setCurrentUserId(this.userId);     
+      this.doctorsService.getDoctor(this.userId);
     }
   }
 
-
+  getStars(score: number | undefined) {
+    const validScore = score ?? 1;
+    return new Array(5).fill(false).map((_, index) => index < validScore);
+  }
  
-
-//   totalAppointments: number = 0;
-
-//   getToTal(): void {
-//    if (this.userId) {
-//      this.appointmentsService.getAppointmentsByUser(this.userId).subscribe({
-//        next: (appointments) => {
-//          this.totalAppointments = appointments.length;
-//        },
-//        error: (err) => {
-//          console.error('Error fetching appointments:', err);
-//        }
-//      });
-//    }
-//  }
 
 }

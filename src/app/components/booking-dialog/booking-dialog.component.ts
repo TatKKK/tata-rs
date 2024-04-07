@@ -17,9 +17,9 @@ export class BookingDialogComponent {
   {
   
   }
-  onCancelClick(): void {
-    this.display = false;
-  }
+  // onCancelClick(): void {
+  //   this.display = false;
+  // }
   onSubmit():void{
     this.dialogRef.close(this.notes);
   }

@@ -8,10 +8,10 @@ import { FilterService } from '../../services/filter.service'
 import { MatDialog } from '@angular/material/dialog'
 import { AuthService } from '../../services/auth/auth.service'
 import { Router } from '@angular/router'
-import { MatDialogConfig } from '@angular/material/dialog'
 import { ViewDoctorComponent } from '../../pages/view-doctor/view-doctor.component'
 import { DialogService } from 'primeng/dynamicdialog'
 import { Appointment } from '../../models/appointment.model'
+import { AppointmentsService } from '../../services/appointments.service'
 
 interface PaginatedDoctorResult {
   TotalCount: number
@@ -68,7 +68,8 @@ export class DoctorCardsComponent implements OnInit {
     public doctorsService: DoctorsService,
     private signalRService: SignalRService,
     public filterService: FilterService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private appointmentsService:AppointmentsService
   ) {}
 
   // openDoctorDialog(doctor: Doctor, event:MouseEvent): void {
@@ -158,29 +159,49 @@ export class DoctorCardsComponent implements OnInit {
     }
   }
 
-  handleClick (doctor: Doctor, event: MouseEvent): void {
+  handleClick(doctor: Doctor, event: MouseEvent): void {
     event.preventDefault();
-    this.doctor = doctor;
-    this.incrementViewCount(doctor.Id!);
-this.openDoctorDialog(doctor);  
+    if(doctor.Id){
+      this.incrementViewCount(doctor.Id);
+    }   
+    
+    if (doctor.Id) {
+      this.appointmentsService.getAppointmentsByDoctor(doctor.Id)
+  .subscribe({
+    next: (appointments) => {
+      this.openDoctorDialog(doctor, appointments);
+    },
+    error: (error) => {
+      console.error('Error fetching appointments:', error);
+    }
+  });
+
+    }
   }
-  openDoctorDialog(doctor:Doctor) {
+  
+ 
+  openDoctorDialog(doctor: Doctor, appointments: Appointment[]): void {
     console.log("Opening dialog:", doctor);
     const ref = this.dialogService.open(ViewDoctorComponent, {
       data: {
-        doctor: this.doctor
+        doctor: doctor,
+        doctorId: doctor.Id,
+        appointments: appointments 
       },
       header: '',
       width: '70%',
+      dismissableMask: true,
       contentStyle: {"max-height": "100vh", "overflow": "auto"},
-      draggable:true,
-      resizable:true
+      draggable: true,
+      resizable: true
     });
   
     ref.onClose.subscribe((result) => {
-     
+      
     });
   }
+  
+ 
   
   closeDialog():void{
     this.display=false;

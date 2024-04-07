@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth/auth.service'
 import { throwError } from 'rxjs'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { MessageService } from 'primeng/api'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-doctor-category-list',
@@ -24,6 +25,7 @@ export class DoctorCategoryListComponent implements OnInit {
 
   constructor (
     private route: ActivatedRoute,
+    private router:Router,
     public doctorsService: DoctorsService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
@@ -52,16 +54,15 @@ export class DoctorCategoryListComponent implements OnInit {
     return new Array(5).fill(false).map((_, index) => index < validScore)
   }
 
-  deleteDoctor (doctor: Doctor): void {
+  deleteDoctor (doctor: Doctor, event:Event): void {
     if (!this.authService.isAdmin()) {
-      this.snackBar.open(
-        ` Log in as admin;`,
-        'Close',
-        {
-          duration: 5000
-        }
-      )
-      return
+      this.messageService.add({
+        key:'tl',
+        severity: 'warn',
+        summary: 'Unauthorized',
+        detail: 'Authorization required',
+        life: 2000
+      });
     }
     this.doctorsService.deleteDoctor(doctor).subscribe({
       next: () => {
@@ -74,29 +75,19 @@ export class DoctorCategoryListComponent implements OnInit {
       }
     })
   }
-  authorizationWarning() {
-    this.messageService.add({
-      key:'tl',
-      severity: 'Warn',
-      summary: 'Info Message',
-      detail: 'Authorization required',
-      life: 2000
-    });
-  }
-  
-  openSnackBar1 (message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2000
-    })
-  }
-
-  editDoctors (doctor: Doctor): void {
+ 
+  editDoctors (doctor: Doctor, event:Event): void {
     if (!this.authService.isAdmin()) {
-      this.snackBar.open(` Log in as admin`, 'Close', {
-        duration: 5000
-      })
-
-      return
+      event.preventDefault();
+      this.messageService.add({
+        key:'tl',
+        severity: 'warn',
+        summary: 'Unauthorized',
+        detail: 'Authorization required',
+        life: 2000
+      });
+    } else{
+      this.router.navigate(['/editPage', doctor.Id]);
     }
     this.doctorsService.editDoctor(doctor).subscribe({
       next: () => {

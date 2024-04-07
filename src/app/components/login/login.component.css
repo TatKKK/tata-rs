@@ -1,5 +1,5 @@
 .auth a {
-  font-size: 16px;
+  font-size: 1.15em;
   font-weight: 400;
   line-height: 19px;
   letter-spacing: 0em;
@@ -7,7 +7,7 @@
 
 .auth {
   background-color: var(--color-background-light);
-  padding: 10px 20px;
+  padding: 10px 17px;
   border-radius: 30px;
 }
 

@@ -1,0 +1,25 @@
+.custom-ngBtn {
+    background: #3ACF99;
+    width: 9.9rem; 
+    height: 3rem; 
+    gap: 0rem;
+    border-radius: 50px; 
+    border:none;
+}
+
+
+
+.custom-ngTextArea {
+    border: 1px solid #ECF2F8;
+    /* width: 22.3125rem; 
+    height: 5.625rem;  */
+    gap: 0rem;
+    border-radius: 10px;
+    width: 100%;
+    padding: 10px;
+    height: 100px;
+    margin-top:15px;
+}
+.custom-ngTextArea:focus{
+    outline:none;
+}

@@ -57,12 +57,15 @@ export class UserPageComponent implements OnInit {
     this.route.params.subscribe(params => {
       const email = params['email']
       if (email) {
-        this.fetchUserAndAppointments(email)
+        this.fetchUserAndAppointments(email);
+        console.log('appointments from userpage:', this.appointments);
       } else {
         console.log('No email provided in the route')
       }
     })
   }
+
+  
 
   private fetchUserAndAppointments (email: string): void {
     this.users.getUserByEmail(email).subscribe({
@@ -76,6 +79,7 @@ export class UserPageComponent implements OnInit {
       error: err => console.error('Failed to fetch user', err)
     })
   }
+  
 
   private fetchAppointments (userId: number): void {
     this.appointmentsService.getAppointmentsByUser(userId).subscribe({
@@ -95,18 +99,20 @@ export class UserPageComponent implements OnInit {
 
   totalAppointments: number = 0
 
-  getToTal (): void {
-    if (this.userId) {
-      this.appointmentsService.getAppointmentsByUser(this.userId).subscribe({
-        next: appointments => {
-          this.totalAppointments = appointments.length
-          console.log(appointments)
-          console.log('total appointments')
-        },
-        error: err => {
-          console.error('Error fetching appointments:', err)
-        }
-      })
-    }
-  }
+  // getToTal (): void {
+  //   if (this.userId) {
+  //     this.appointmentsService.getAppointmentsByUser(this.userId).subscribe({
+  //       next: appointments => {
+  //         this.totalAppointments = appointments.length
+  //         console.log(appointments)
+  //         console.log('total appointments')
+  //       },
+  //       error: err => {
+  //         console.error('Error fetching appointments:', err)
+  //       }
+  //     })
+  //   }
+  // }
+
+
 }

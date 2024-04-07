@@ -4,15 +4,13 @@
   *ngIf="user.Email !==undefined && user.Email !== null &&userId !==null" [user]="user" [userId]="userId"
   [totalAppointments]="totalAppointments">
   </app-user-info-card>
+
+  
   <!-- <app-doctor-info-card *ngIf="userRole === 'doctor'" class="user-info grid-item"></app-doctor-info-card> -->
 
   <div class="grid-item">
     <div class="card-element" *ngIf="userRole !== 'admin'">
-      <h2>ჩემი ჯავშანი  <span>({{ this.totalAppointments}})</span></h2>     
-      <div>
-        Total Appointments: {{ totalAppointments }} (Debug: {{ totalAppointments | json }})
-      </div>
-      
+      <h2>ჩემი ჯავშანი  <span>({{ this.totalAppointments}})</span></h2>          
     </div>
     <app-booking-calendar class="booking-calendar"
     *ngIf="user && userId !== null" [userId]="userId" [appointments]="appointments"></app-booking-calendar>
