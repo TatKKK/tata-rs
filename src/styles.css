@@ -229,9 +229,8 @@ input::placeholder{
 
 /*|| sidebar */
 .app-sidebar{
-width:25%;
 border: 1px solid #ECF2F8;
-height: fit-content;
+height: 80vh;
 }
 
 .disabled{
@@ -305,6 +304,8 @@ a{
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css"; */
 
+
+/* --- log in dialog */
 .p-dialog .p-dialog-header .p-dialog-title {
   color:var(--color-red);
   font-size: 1em;
@@ -314,9 +315,7 @@ a{
 }
 .p-dialog-header{
   justify-content: center;
-    padding-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
+  padding: 1rem 0 0 0;
 }
 .p-button-link{
   padding:5px;
@@ -330,17 +329,18 @@ a{
 }
 
 .p-dialog .p-dialog-content {
-  /* background: #ffffff; */
   color: var(--color-primary);
-  /* padding: 0 1.5rem 2rem 1.5rem; */
   display: flex;
   justify-content: center;
+}
+p-footer{
+  padding-bottom: 1rem;
+    display: flex;
 }
 div.p-dialog-mask {
 	
 	pointer-events: auto;
 }
-
 
 .p-dialog .p-dialog-header-icons{
   display:none;

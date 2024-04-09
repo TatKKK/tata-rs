@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { FormGroup, FormBuilder, ValidationErrors, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, ValidationErrors, Validators, AbstractControl, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DoctorsService } from '../../services/doctors.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-doctor',
@@ -14,8 +15,12 @@ export class AddDoctorComponent {
   faEnvelope=faEnvelope;
   doctorForm: FormGroup;
 
+  private destroy$ = new Subject<void>()
+  userRole!:string;
+
   constructor(
     private fb: FormBuilder,
+    private authService:AuthService,
     private router: Router,
     private doctorsService: DoctorsService   ,
     private auth:AuthService
@@ -31,10 +36,7 @@ export class AddDoctorComponent {
       Cv:null
     });   
   }
-  isAdmin(): boolean {
-    const userRole = this.auth.getUserRole();
-    return userRole === 'admin';
-  }
+  
 
 
   validateName(control:AbstractControl):ValidationErrors | null {
@@ -47,8 +49,16 @@ export class AddDoctorComponent {
     return (control.value.length<3)?{wrongPassword:{value:control.value}}:null;
   }
 
-  ngOnInit(): void {}
-  
+  ngOnInit(): void {
+      
+    this.authService.getUserRole().pipe(takeUntil(this.destroy$)).subscribe(role => {
+      this.userRole = role;
+    });
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   addDoctor(): void {
     console.log(this.doctorForm.controls)
     console.log(this.doctorForm.value);

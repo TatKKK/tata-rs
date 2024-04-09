@@ -1,7 +1,6 @@
 <div class="container paddings">
-  <app-admin-header></app-admin-header>
-
-  <p-scrollPanel [style]="{width: '100%', height: '400px'}">
+  <p-toast></p-toast>
+   <p-scrollPanel [style]="{width: '100%', height: '400px'}">
     <div  table-container>
       <table class="doc-category-list">
         <thead>
@@ -42,6 +41,7 @@
                   </svg>
                 </a>
               </button>
+            
               <button (click)="deleteDoctor(doctor)" class="delete-button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_41_2786)">

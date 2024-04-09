@@ -1,17 +1,44 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Login } from '../../models/user.model'
-import { Observable, catchError, throwError, tap, BehaviorSubject } from 'rxjs'
+import { Observable, catchError, throwError, tap, BehaviorSubject , map} from 'rxjs'
 import { Router } from '@angular/router'
 import { Injectable } from '@angular/core'
 import { jwtDecode } from 'jwt-decode'
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private userRole: 'patient' | 'doctor' | 'admin' | 'unknown' = 'unknown'
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken())
-  private userImageUrl = new BehaviorSubject<string>('')
+
+  
+  private userRole: 'patient' | 'doctor' | 'admin' | 'unknown' = 'unknown';
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
+  private userImageUrl = new BehaviorSubject<string>('');
+
+  private userRoleSubject = new BehaviorSubject<'patient' | 'doctor' | 'admin' | 'unknown'>('unknown');
+
+  setUserRole(token: string): void {
+    if (typeof token !== 'string' || token.trim() === '') {
+      console.error('Token is not a string or is empty');
+      this.userRoleSubject.next('unknown'); 
+      return;
+    }
+    try {
+      const decodedToken = jwtDecode<any>(token);
+      const role = decodedToken.role as 'patient' | 'doctor' | 'admin' | 'unknown';
+      this.userRoleSubject.next(role); 
+      console.log(role + ' userRole is set');
+    } catch (error) {
+      console.error('Error decoding token', error);
+      this.userRoleSubject.next('unknown'); 
+    }
+  }
+
+  getUserRole(): Observable<'patient' | 'doctor' | 'admin' | 'unknown'> {
+    return this.userRoleSubject.asObservable(); 
+  }
+
 
   setImageUrl (imageUrl: string): void {
     this.userImageUrl.next(imageUrl)
@@ -50,12 +77,15 @@ export class AuthService {
     return this.isLoggedInSubject.asObservable()
   }
 
-  public logout (): void {
-    this.removeToken()
-    this.userRole = 'unknown'
-    this.updateLoginStatus()
-    this.router.navigate(['/'])
+  public logout(): void {
+    this.removeToken();
+    localStorage.clear();
+    this.userRoleSubject.next('unknown');
+    this.isLoggedInSubject.next(false);
+    this.userImageUrl.next('');
+    this.router.navigate(['/']);
   }
+  
 
   authenticate (login: Login): Observable<any> {
     let httpOptions = {
@@ -75,36 +105,23 @@ export class AuthService {
           this.updateLoginStatus()
         }),
         catchError(error => {
-          // alert(error.error);
+        
           return throwError(() => new Error('Authentication failed'))
         })
       )
   }
-  setUserRole (token: string): void {
-    if (typeof token !== 'string' || token.trim() === '') {
-      console.error('Token is not a string or is empty')
-      return
-    }
-    try {
-      const decodedToken = jwtDecode<any>(token)
-      this.userRole = decodedToken.role
-      console.log(this.userRole + ' userRole is set')
-    } catch (error) {
-      console.error('Error decoding token', error)
-    }
+  
+
+  isAdmin(): Observable<boolean> {
+    return this.userRoleSubject.asObservable().pipe(map(role => role === 'admin'));
   }
 
-  getUserRole (): 'patient' | 'doctor' | 'admin' | 'unknown' {
-    return this.userRole
+  isPatient(): Observable<boolean> {
+    return this.userRoleSubject.asObservable().pipe(map(role => role === 'patient'));
   }
-  isAdmin (): boolean {
-    return this.getUserRole() === 'admin'
-  }
-  isPatient (): boolean {
-    return this.getUserRole() === 'patient'
-  }
-  isDoctor (): boolean {
-    return this.getUserRole() === 'doctor'
+
+  isDoctor(): Observable<boolean> {
+    return this.userRoleSubject.asObservable().pipe(map(role => role === 'doctor'));
   }
 
   getUserIdFromToken (token: string): number | null {
@@ -136,6 +153,19 @@ export class AuthService {
       return null
     }
   }
+
+  getUserRoleFromToken(token: string): string | null {
+    try {
+      const decodedToken = jwtDecode<any>(token);
+      const userRole = decodedToken['role'] as string; 
+      return userRole || 'unknown';
+    } catch (error) {
+      console.error('Error decoding token', error);
+      return null;
+    }
+  }
+  
+
   getUserId (): number | null {
     const token = this.getToken()
     if (!token) return null
@@ -158,9 +188,7 @@ export class AuthService {
     this.setUserDetailsFromToken(token);
     this.isLoggedInSubject.next(true);
   }
-  // public setToken (token: string): void {
-  //   localStorage.setItem('token', token)
-  // }
+  
 
   getToken (): string | null {
     return localStorage.getItem('token')

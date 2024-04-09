@@ -1,5 +1,6 @@
 <div class="container paddings">
-  <app-admin-header *ngIf="userRole===''admin"></app-admin-header> <!--jer avtorizebuli araa da roli ar gamochndeba magram iqneb meere damchirdes..-->
+  <app-admin-header *ngIf="userRole==='admin'"></app-admin-header>
+   
   <h2 class="title">კატეგორია</h2>
   <p-toast position="top-left" key="tl"></p-toast>
   <table class="doc-list">
@@ -14,7 +15,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let doctor of doctors">
-        <td> <a [routerLink]="['/viewDoctor', doctor.Id]">  {{ doctor.Fname + ' ' + doctor.Lname }}</a></td>         
+        <td> <a [routerLink]="['/doctorGeneralView', doctor.Id]">  {{ doctor.Fname + ' ' + doctor.Lname }}</a></td>         
         
         <td>{{ doctor.Category }}</td>
         <td><img  [src]="'https://localhost:7042' + doctor.ImageUrl" alt="ar gaixsna" class="doctor-image"></td>

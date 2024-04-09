@@ -4,14 +4,14 @@
       <img [src]="'https://localhost:7042' + user?.ImageUrl" alt="Doctor image" class="user-image">
   
       <h4 class="doc-name">{{ user?.Fname }} {{ user?.Lname }}</h4>
-      <span><b>{{this.role}} </b></span>
+      <span><b>{{this.userRole}} </b></span>
       <!-- <h4>{{user?.Category}}</h4> -->
       <!-- <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
         <i class="star" [class.filled]="filled">&#9733;</i>
       </span> -->
     </div>
-    <h2 *ngIf="this.role=== 'doctor'">{{doctor?.Category}} </h2>
-    <div class="rating" *ngIf="this.role=== 'doctor'">
+    <h2 *ngIf="this.userRole=== 'doctor'">{{doctor?.Category}} </h2>
+    <div class="rating" *ngIf="this.userRole=== 'doctor'">
       <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
         <i class="star" [class.filled]="filled">&#9733;</i>
       </span>

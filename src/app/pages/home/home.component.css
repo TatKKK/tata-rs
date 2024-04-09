@@ -75,3 +75,7 @@
 .clinic-banner__location:hover {
   background-color: var(--color-hover);
 }
+.app-sidebar{
+  width:25%;
+  margin-right:30px;
+}

@@ -5,6 +5,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import { Doctor } from '../../models/doctor.model';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -13,15 +14,19 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './doctors-list-admin.component.css',
 })
 export class DoctorsListAdminComponent implements OnInit {
-
   
   faEdit=faEdit;
   faDelete=faDeleteLeft;
 
   doctors: Doctor[] = [];
+
+  userRole:string = 'unknown';
   
 
   ngOnInit(): void {  
+    this.authService.getUserRole().subscribe(role => {
+      this.userRole = role;
+    });
     this.doctorsService.getDoctors().subscribe({
       next: (doctors: Doctor[]) => {
         this.doctors = doctors;
@@ -34,8 +39,13 @@ export class DoctorsListAdminComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public doctorsService: DoctorsService,
-    private authService:AuthService
+    private authService:AuthService,
+    private messageService:MessageService
   ) {}
+
+  isAdmin():boolean{
+    return this.userRole === 'admin';
+  }
 
   
   
@@ -57,6 +67,13 @@ deleteDoctor(doctor:Doctor):void{
   this.doctorsService.deleteDoctor(doctor).subscribe({
     next:()=>{
       this.doctorsService.doctors=this.doctorsService.doctors.filter(doc=>doc.id!==doctor.Id);
+      this.messageService.add({
+        key: 'tl',
+        severity: 'info',
+        summary: '',
+        detail: 'Successfully deleted',
+        life: 2000
+      })
     },
     error:(error)=>{
       console.error('Error deleting doctor:', error);

@@ -12,7 +12,7 @@ import { DynamicDialogComponent } from 'primeng/dynamicdialog';
 export class LoginPromptComponent {
   display: boolean = true;
 visible:boolean=false;
-  @Output() closeEvent = new EventEmitter<void>();
+
 
   constructor(private router:Router,
     public dialogRef: DynamicDialogRef,
@@ -22,15 +22,18 @@ visible:boolean=false;
 
   }
 
-  // onOkClick(): void {
-  //   this.display = false;
-  //   this.closeEvent.emit();
-  // }
+  
 
   navigateAndClose(url: string): void {
     this.router.navigateByUrl(url).then(() => {
-        this.closeDialog();
+        this.dialogRef.close();
     });
+}
+
+closeMainDialog(): void {
+  if (this.dialogRef) {
+      this.dialogRef.close();
+  }
 }
 
 private closeDialog(): void {

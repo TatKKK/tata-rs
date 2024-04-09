@@ -13,8 +13,8 @@ import { AuthGuardService as AuthGuard} from './services/auth/auth-guard.service
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { EditPageAdminComponent } from './pages/edit-page-admin/edit-page-admin.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-
-
+import { AdduserComponent } from './pages/adduser/adduser.component';
+import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-general-view.component';
 
 const routes: Routes = [
   {path:'', component:HomeComponent},
@@ -22,11 +22,13 @@ const routes: Routes = [
   {path: 'userPage/:email',  component:UserPageComponent},
   {path:'addPatient', component:AddPatientComponent},
   {path:'addDoctor', component:AddDoctorComponent, canActivate: [AuthGuard]},
+  {path:'addUser', component:AdduserComponent},
   {path:'login', component:LoginComponent},
   {path: 'doctors/:category', component:DoctorCategoryListComponent }, 
   // {path:'editPage/:id', component:EditPageAdminComponent, canActivate: [AuthGuard]},
   {path:'editPage/:id', component:EditPageAdminComponent},
   {path:'viewDoctor/:id', component:ViewDoctorComponent},
+  {path:'doctorGeneralView/:id', component:DoctorGeneralViewComponent},
   {path:'sidebar', component:SidebarComponent},
   {path:'doctorsList', component:DoctorsListAdminComponent},
   { path: '**', component: PageNotFoundComponent },

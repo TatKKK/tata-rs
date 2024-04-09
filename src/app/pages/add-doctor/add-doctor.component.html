@@ -1,5 +1,5 @@
 <div class="form-container">
-<h2 *ngIf="isAdmin()"> ADMIN VIEW </h2>
+<h2 *ngIf="userRole === 'admin'"> ADMIN VIEW </h2>
 
     <form  [formGroup]="this.doctorForm" (ngSubmit)="addDoctor()" class="add-user-form">
         <h2 class="title">რეგისტრაცია</h2>

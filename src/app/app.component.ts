@@ -17,7 +17,10 @@ export class AppComponent {
 
   
   ngOnInit(): void {
-    this.userRole=this.authService.getUserRole();
+    this.authService.getUserRole().subscribe(role => {
+      this.userRole = role;
+    });
+   
 
   }
   

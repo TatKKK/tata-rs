@@ -5,11 +5,10 @@ import { ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PatientsService } from '../../services/patients.service';
 import { tap } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { RegistrationSuccessComponent } from '../../dialogs/registration-success/registration-success.component';
-
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MessageService } from 'primeng/api';
+import { AuthService } from '../../services/auth/auth.service';
+import { Login } from '../../models/user.model';
 
 
 @Component({
@@ -29,11 +28,11 @@ export class AddPatientComponent implements OnInit {
   isUploading:boolean=false;
   
   constructor(
-    private dialog:MatDialog,
+    private authService:AuthService,
+   private messageService:MessageService,
     private fb: FormBuilder,
     private router: Router,
-    private patientsService: PatientsService   ,
-    // public matDialog:MatDialogRef <any>
+    private patientsService: PatientsService   
   ) {
     this.patientForm = this.fb.group({
       Fname: ['', [Validators.required, this.validateName]],
@@ -42,13 +41,12 @@ export class AddPatientComponent implements OnInit {
       IdNumber: ['',[ Validators.required, this.validateId, Validators.pattern(/^\d{11}$/)]],
       Password: ['', [Validators.required, this.validatePassword,Validators.pattern(/.*@7.*/)]],
       // activationCode: ['', Validators.required] ,//am modelshi araa..
-
       Image: null
     });    
   }
 
   validateName(control:AbstractControl):ValidationErrors | null {
-    return control.value.length <5?{wrongName:{value:control.value}}:null;
+    return control.value.length <3?{wrongName:{value:control.value}}:null;
   }
   validateId(control:AbstractControl):ValidationErrors | null {
     return control.value.length !==11?{wrongId:{value:control.value}}:null;
@@ -65,6 +63,7 @@ export class AddPatientComponent implements OnInit {
       formData.append('Fname', this.patientForm.get('Fname')?.value ?? '');
       formData.append('Lname', this.patientForm.get('Lname')?.value ?? '');
       const email = this.patientForm.get('Email')?.value ?? '';
+    const password = this.patientForm.get('Password')?.value ?? '';
      formData.append('Email', email);
       formData.append('IdNumber', this.patientForm.get('IdNumber')?.value ?? '');
       // formData.append('Code', this.patientForm.get('Code')?.value ?? '');
@@ -79,12 +78,19 @@ export class AddPatientComponent implements OnInit {
       }
   
       this.patientsService.addPatient(formData).subscribe({
-        next: (res) => {
-          // console.log(res.userId);
+        next: (res) => {         
           console.log(res);
-          // const userId = res.userId;
-          // this.openDialog('registrationSuccess');
-          this.router.navigate(['/userPage', email]);
+          const loginInfo:Login={email:email, password:password};
+          this.authService.authenticate(loginInfo). subscribe({
+            next:(authRes)=>{
+              this.router.navigate(['/userPage', email]);
+
+            },
+            error:(authErr)=>{
+              console.error("Authentication error:", authErr);
+            }
+          })
+         
         },
         error: (err) => {
           console.error("Error response", err.error);
@@ -94,21 +100,6 @@ export class AddPatientComponent implements OnInit {
       console.error("Form is not valid");
     }
   }
-  
-  // openDialog(dialogType: 'activationCode' | 'registrationSuccess'): MatDialogRef<any> | undefined {
-  //   let dialogRef;
-  
-  //   if (dialogType === 'activationCode') {
-  //     dialogRef = this.dialog.open(ActivationCodeComponent);
-  //   } else if (dialogType === 'registrationSuccess') {
-  //     dialogRef = this.dialog.open(RegistrationSuccessComponent);
-  //   } else {
-  //     throw new Error('Unsupported dialog type: ' + dialogType);
-  //   }
-  
-  //   return dialogRef;
-  // }
-  
   
   
   triggerFileInput(): void {
@@ -138,10 +129,15 @@ this.isUploading=true;
     if (email) {
       this.patientsService.createActivationCode(email).subscribe({
         next: (response) => {
-          // this.openDialog('activationCode');
           console.log('Activation code created:', response);        
           this.userEnteredCode = response.activationCode;
           this.patientForm.patchValue({ activationCode: this.userEnteredCode });
+          this.messageService.add({
+            key:'tc',
+            severity: 'info',
+            summary: 'Check activation code in console',
+            life: 2000
+          });
         },
         error: (error) => {
           console.error('Error creating activation code:', error);
@@ -169,9 +165,15 @@ this.isUploading=true;
     ).subscribe({
       next: isValid => {
         if (isValid) {
-          console.log(`Activation code verified for ${email}. Proceeding with registration.`);
+          console.log('kodi sworia')
           this.isActivationCodeVerified = true; 
           this.addPatient(); 
+          this.messageService.add({
+            key:'tc',
+            severity: 'success',
+            summary: 'Successfully registered',
+            life: 7000
+          });
         } else {
           console.error('Invalid or expired activation code.');
           this.activationCodeInvalid = true; 

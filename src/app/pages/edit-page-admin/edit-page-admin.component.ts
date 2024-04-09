@@ -19,6 +19,7 @@ export class EditPageAdminComponent implements OnInit {
 
   doctor!: Doctor;
   appointments:Appointment[]=[];
+  userRole!:string;
 
   constructor(private doctorsService: DoctorsService,
     private router:Router,
@@ -29,7 +30,10 @@ export class EditPageAdminComponent implements OnInit {
     private messageService:MessageService) {}
 
   ngOnInit() {
-    if((!this.auth.authenticate) || this.auth.getUserRole() !== 'admin') {
+    this.auth.getUserRole().subscribe(role => {
+      this.userRole = role;
+    });
+    if((!this.auth.authenticate) || this.userRole !== 'admin') {
       this.messageService.add({ key: 'tl', severity:'Warn', summary: 'Not Authorized', detail: 'Log in as Admin'});
       return;
     }

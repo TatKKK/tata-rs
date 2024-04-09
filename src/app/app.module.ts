@@ -51,6 +51,7 @@ import { ConfirmationService } from 'primeng/api';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AddUserAdminComponent } from './pages/add-user-admin/add-user-admin.component';
+import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-general-view.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { AddUserAdminComponent } from './pages/add-user-admin/add-user-admin.com
    LoginPromptComponent,
    BookingDialogComponent,
    ResetPasswordComponent,
-   AddUserAdminComponent
+   AddUserAdminComponent,
+   DoctorGeneralViewComponent
    
   ],
   imports: [

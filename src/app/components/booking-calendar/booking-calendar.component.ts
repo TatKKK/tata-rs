@@ -17,16 +17,16 @@ import { MessageService } from 'primeng/api'
   templateUrl: './booking-calendar.component.html',
   styleUrl: './booking-calendar.component.css'
 })
-export class BookingCalendarComponent implements OnInit, OnDestroy {
+export class BookingCalendarComponent implements OnInit {
   //icons
   left = faAngleLeft
   right = faAngleRight
 
-  private destroy$ = new Subject<void>()
+  // private destroy$ = new Subject<void>();
 
   @Input() doctorId!: number;
   @Input() userId!:number;
-
+  patientId! :number;
   @Input() appointments: Appointment[] = []
   @Input() appointment!: Appointment
 
@@ -50,9 +50,7 @@ export class BookingCalendarComponent implements OnInit, OnDestroy {
 
   //dasvenebis dgebi..
   predefinedDayOffs: Date[] = [
-    new Date(2024, 3, 28),
-    new Date(2024, 3, 29),
-    new Date(2024, 4, 3)
+    new Date(2024, 3, 9)
   ]
 
   checkUserRole () {
@@ -65,14 +63,11 @@ export class BookingCalendarComponent implements OnInit, OnDestroy {
     this.appointments;  
     this.initializeDays();   
     this.goToCurrentWeek();    
-    this.userRole = this.authService.getUserRole();   
-    this.checkUserRole();
-    this.isLoggedIn = this.authService.isLoggedInSync();          
-  }
-
-  ngOnDestroy () {
-    this.destroy$.next()
-    this.destroy$.complete()
+    this.isLoggedIn = this.authService.isLoggedInSync();            
+    this.authService.getUserRole().subscribe(role => {
+      this.userRole = role;
+    });
+   
   }
 
   constructor (
@@ -163,12 +158,14 @@ export class BookingCalendarComponent implements OnInit, OnDestroy {
   }
 
   isBookable (day: Day, hour: number): boolean {
-    const isWeekend = day.isWeekend
+    const isWeekend = day.isWeekend;
+    const isDayOff=day.isDayOff;
+
     const isBooked = day.appointments.some(
       appointment =>
         appointment.StartTime?.getHours() === hour && appointment.IsBooked
     )
-    return !isWeekend && !isBooked
+    return !isWeekend && !isBooked && !isDayOff
   }
 
   isAppointmentBooked (day: Day, hour: number): boolean {
@@ -182,11 +179,12 @@ export class BookingCalendarComponent implements OnInit, OnDestroy {
     if (this.isBookedByMe(day, hour)) {
       return 'my-booking'
     } else if (this.isAppointmentBooked(day, hour)) {
-      console.log('booked')
       return 'booked'
     } else if (day.isWeekend) {
       return 'weekend'
-    } else {
+    } else if (day.isDayOff) {
+      return 'day-off'}
+      else {
       return 'freeSlot'
     }
   }
@@ -208,8 +206,11 @@ export class BookingCalendarComponent implements OnInit, OnDestroy {
       dismissableMask: true,
       modal:true
     });
+
+   
     ref.onClose.subscribe(() => {
-      this.closeMainDialog();      
+      this.closeMainDialog(); 
+  
     });
 }
 closeMainDialog(): void {
@@ -257,56 +258,61 @@ closeMainDialog(): void {
     });
   }
  
-
   createAppointment(day: Day, hour: number, notes: string): void {
     const startDate = new Date(day.date);
     startDate.setHours(hour, 0, 0, 0);
-    // const endDate = new Date(startDate);
-    // endDate.setHours(startDate.getHours() + 1); 
-    const role=this.authService.getUserRole();
-    const userId=this.authService.getUserId();
-    let doctorId = null;
-  let patientId = null;
+    
+    const userId = this.authService.getUserId(); 
+    console.log("userId", userId);
   
-  if (role === 'doctor') {
-    doctorId = userId;
-  } else if (role === 'patient') {
-    patientId = userId;
-  }else{
-    patientId=161;
-    doctorId=163;
-  }
-          
-   const newAppointment={
-    Id:0,
-    DoctorId:doctorId,
-    patientId:patientId,
-    StartTime:startDate,
-    Notes:notes,
-    IsBooked: true
-   }
+      this.authService.getUserRole().subscribe(role => {
+      // let doctorId = null;
       
-   console.log(newAppointment +"new Appointment");
-
-    this.appointmentService.createAppointment(newAppointment).subscribe({
-      next: (appointment) => {
-        console.log('Appointment booked successfully:', appointment);
-        this.snackBar.open('Appointment booked successfully', 'Close', { duration: 5000 });
-        this.refreshAppointments();
-      },
-      error: (error) => {
-        console.error('Error booking appointment:', error);
-        this.snackBar.open('Failed to book appointment', 'Close', { duration: 5000 });
+  
+      if (role === 'doctor' && userId !== null) {
+        this.doctorId = userId;
+      } else if (role === 'patient'&& userId !== null) {
+        this.patientId = userId;
+        
+      } else {
+       //admins davamateb
       }
+  
+      const newAppointment = {
+        Id: 0,
+        DoctorId: this.doctorId,
+        PatientId: this.patientId,
+        StartTime: startDate,
+        Notes: notes,
+        IsBooked: true
+      };
+  
+      console.log('Creating new appointment:', JSON.stringify(newAppointment, null, 2));
+  
+      this.appointmentService.createAppointment(newAppointment).subscribe({
+        next: (appointment) => {
+          console.log('Appointment booked successfully:', appointment);
+          this.snackBar.open('Appointment booked successfully', 'Close', { duration: 5000 });
+          this.refreshAppointments();
+        },
+        error: (error) => {
+          console.error('Error booking appointment:', error);
+          this.snackBar.open('Failed to book appointment', 'Close', { duration: 5000 });
+        }
+      });
     });
   }
+  
 openDeleteDialog(day:Day, hour:number) {
    this.confirmationService.confirm({
-    message: 'Do you want to delete this appointment?',
-    header: 'Confirmation',
-    icon: 'pi pi-info-circle',
+    message: 'გსურთ ჯავშნის წაშლა?',
+    acceptLabel:'დიახ',
+    rejectLabel:'არა',
+    header: '',
+    icon: '',
     accept: () => {
       this.onBookedSlotClick(day, hour);
+    
     }
   });
 }
@@ -319,7 +325,9 @@ openDeleteDialog(day:Day, hour:number) {
         a => a.Id === appointmentId
       )
       if (appointmentToDelete) {
-        this.deleteAppointment(appointmentToDelete)
+        this.deleteAppointment(appointmentToDelete);
+        this.refreshAppointments();
+        this.dialogRef.close;
       }
     } else {
       console.error('Appointment ID not found for the selected slot.')
@@ -329,7 +337,7 @@ openDeleteDialog(day:Day, hour:number) {
   deleteAppointment (appointment: Appointment) {
     this.appointmentService.deleteAppointment(appointment).subscribe({
       next: () => {
-        this.messageService.add({severity: 'info',summary: 'Info Message',detail: 'Successfully delete',
+        this.messageService.add({severity: 'success',summary: 'Info',detail: 'Successfully deleted',
           life: 2000
         });
         this.refreshAppointments();
@@ -372,5 +380,8 @@ openDeleteDialog(day:Day, hour:number) {
       console.error('Cannot fetch appointments, userId is undefined');
     }
   }
-  
+  // ngOnDestroy(): void {
+  //   this.destroy$.next();
+  //   this.destroy$.complete();
+  // }
 }

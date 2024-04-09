@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { Observable } from 'rxjs';
 })
 
 export class LoginComponent {
-
+  userRole:string='';
   login:Login=new Login();
   greeting:string="";
   token:string="";
@@ -23,13 +24,21 @@ export class LoginComponent {
 
   userName: string = '';
 userImageUrl:string='';
-userRole:string='';
+
+// private destroy$ = new Subject<void>();
+
 
   showAuth=true;
-userImageUrl$!: Observable<string>;
+
+
+userRole$: Observable<'patient' | 'doctor' | 'admin' | 'unknown'>;
+  userImageUrl$: Observable<string>;
+  isLoggedIn$: Observable<boolean>;
 
   ngOnInit(): void {
     this.userImageUrl$ = this.authService.getImageUrl();
+   
+    console.log('aaaaaaaaaaaaaaa', this.userRole);
 
     this.authService.isLoggedIn().subscribe(loggedInStatus => {
       this.isLoggedIn = loggedInStatus;
@@ -41,6 +50,11 @@ userImageUrl$!: Observable<string>;
     });
   }
 
+  // ngOnDestroy(): void {
+  //   this.destroy$.next();
+  //   this.destroy$.complete();
+  // }
+
   toggleLoginForm() {
     this.showLoginForm = !this.showLoginForm;
   }
@@ -48,21 +62,26 @@ userImageUrl$!: Observable<string>;
 constructor(private router:Router, 
   private authService:AuthService,
   private dialogRef:DynamicDialogRef){  
+
+    this.userRole$ = this.authService.getUserRole();
+    this.userImageUrl$ = this.authService.getImageUrl();
+    this.isLoggedIn$ = this.authService.isLoggedIn();
    
 }
 
 authenticate(): void {
   this.authService.authenticate(this.login).subscribe({
     next: (res) => {
-      console.log(this.login.email, 'emaili???');
       this.userImageUrl = this.authService.getImageUrlFromToken(res.AccessToken) || 'defaultImageUrl';
       this.userName = this.authService.getUserNameFromToken(res.AccessToken) || 'Anonymous User';
-      this.userRole=this.authService.getUserRole();  
+      this.userRole=this.authService.getUserRoleFromToken(res.AccessToken) || 'Unknown';
+      // this.authService.getUserRole().subscribe(role => {
+      //   this.userRole = role;
+      // });
       this.isLoggedIn=this.authService.isLoggedInSync();
       if(this.login.email){
         this.authService.setUserEmail(this.login.email);
       }
-    
       if (this.isLoggedIn) {
         this.showLoginForm = false;
         this.showAuth = false;
@@ -77,8 +96,8 @@ authenticate(): void {
     }
   });
 }
-goToHomePage():void{
-  this.router.navigate(['/']);
+goToAdminPage():void{
+  this.router.navigate(['/doctorsList']);
 }
 goToUserPage():void{
   this.authService.getUserEmail().subscribe(email => {
@@ -96,7 +115,6 @@ logout():void{
   this.authService.logout();
   this.showAuth=true;
 }
-
 
 
 }

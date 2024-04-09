@@ -7,11 +7,8 @@
 }
 
 .day-off {
-  background: #8dc1f5;
+  background: #FFF1F4;
 }
-
-/*----update */
-
 
 .hour-label,.date-label,.timeslot {
   width: 100px; 
@@ -24,6 +21,10 @@
 }
 .timeslot{
   border-radius:7px;
+  width:6rem;
+  height:5rem;
+  position:relative;
+  text-align:center;
 }
 .date-label{
   width:100px;
@@ -39,7 +40,8 @@
 }
 .my-booking{
   /* background: #DAFAEE; */
-  background-color: blue;
+  background-color: #DAFAEE;
+
 }
 
 .booked {
@@ -201,6 +203,7 @@ transition: 0.3s ease;
 
 .timeslot span{
   color:#3ACF99;
+
 }
 .date-label span{
   margin-right:5px;
@@ -265,4 +268,24 @@ transition: 0.3s ease;
   font-size: 16px;
   line-height: 19.2px;
   opacity:30%; 
+  }
+
+  .delete-appointment-btn{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-radius:50%;
+    border:none;
+    background-color:#ffffff;
+    height:2rem;
+    width:2rem;
+    position:absolute;
+    right:0;
+    top:0;
+    color:red;
+    cursor:pointer;
+  }
+  .my-booking span{
+    color:#3ACF99;
+
   }

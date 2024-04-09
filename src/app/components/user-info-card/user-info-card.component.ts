@@ -19,7 +19,7 @@ export class UserInfoCardComponent implements OnInit {
   doctor!:Doctor 
 
 
-  role:String='';
+  userRole!:string;
   
    constructor(
     public appointmentsService:AppointmentsService,
@@ -28,7 +28,9 @@ export class UserInfoCardComponent implements OnInit {
   ){
   }
   ngOnInit(): void {
-    this.role=this.authService.getUserRole();
+    this.authService.getUserRole().subscribe(role => {
+      this.userRole = role;
+    });
     if (this.user&&this.userId !==null && this. userId !== undefined) {
       this.appointmentsService.setCurrentUserId(this.userId);     
       this.doctorsService.getDoctor(this.userId);

@@ -4,11 +4,14 @@ import { Router } from '@angular/router';
 import { PatientsService } from '../../services/patients.service';
 import { DoctorsService } from '../../services/doctors.service';
 
+
 @Component({
   selector: 'app-adduser',
   templateUrl: './adduser.component.html',
-  styleUrls: ['./adduser.component.css']
+  styleUrls: ['./adduser.component.css', 
+  '../add-patient/add-patient.component.css']
 })
+
 export class AdduserComponent implements OnInit {
   userForm: FormGroup;
 

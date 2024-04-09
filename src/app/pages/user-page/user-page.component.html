@@ -13,6 +13,6 @@
       <h2>ჩემი ჯავშანი  <span>({{ this.totalAppointments}})</span></h2>          
     </div>
     <app-booking-calendar class="booking-calendar"
-    *ngIf="user && userId !== null" [userId]="userId" [appointments]="appointments"></app-booking-calendar>
+    *ngIf="user && userId !== null&&Id !==null " [userId]="userId" [appointments]="appointments" [id]="Id"></app-booking-calendar>
   </div>
 </div>

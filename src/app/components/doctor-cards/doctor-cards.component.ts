@@ -190,10 +190,11 @@ export class DoctorCardsComponent implements OnInit {
       },
       header: '',
       width: '70%',
-      dismissableMask: true,
       contentStyle: {"max-height": "100vh", "overflow": "auto"},
       draggable: true,
-      resizable: true
+      resizable: true,
+      dismissableMask: true,
+      modal:true
     });
   
     ref.onClose.subscribe((result) => {

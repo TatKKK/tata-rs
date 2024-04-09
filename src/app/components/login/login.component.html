@@ -3,23 +3,23 @@
     <span>/</span>
     <a routerLink="/addPatient" class="auth__link">რეგისტრაცია</a>
 </div>
-<!-- <p *ngIf="this.userRole === 'admin'"> AAAAAAAAAAAAAAAAA</p> -->
-<div *ngIf="isLoggedIn" class="user-greeting">
-  <img *ngIf = "userRole === 'admin'"
-  [src]="'https://localhost:7042' + userImageUrl" alt="Admin image"  
-  class="patient-image" (click)="goToHomePage()">
-  <ng-container *ngIf="userRole !== 'admin'">
-    <img *ngIf="userImageUrl$ | async as userImageUrl"
-         [src]="'https://localhost:7042' + userImageUrl" 
-         alt="User Image" 
-         (click)="goToUserPage()">
+<div *ngIf="isLoggedIn$ | async" class="user-greeting"> 
+  <ng-container *ngIf="userRole$ | async as userRole">
+
+    <ng-container *ngIf="userImageUrl$ | async as userImageUrl">
+      <img [src]="'https://localhost:7042' + userImageUrl" alt="User Image"
+      (click)="userRole === 'admin' ? goToAdminPage() : goToUserPage()">
+    </ng-container>
+    <span (click)="userRole === 'admin' ? goToAdminPage() : goToUserPage()">
+      {{ userRole }}
+    </span>
   </ng-container>
-  
- 
-  <!-- <span> {{this.userName}}</span> -->
-  <span  (click)="goToUserPage()"> {{this.userRole}}</span>
+
   <a routerLink="/" (click)="logout()"> Logout</a>
 </div>
+
+
+
 <div *ngIf="showLoginForm" class="login-popup-wrapper" (click)="closeLoginForm()">
     <div class="login-container" (click)="$event.stopPropagation()">
         <form class="login-form" #loginForm="ngForm" (ngSubmit)="authenticate()">

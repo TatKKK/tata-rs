@@ -43,7 +43,7 @@ public appointments:Appointment[]=[];
   createAppointment(newAppointment:Appointment): Observable<Appointment> {
       let token=this.authService.getToken();    
       if(!this.authService.getToken()){
-        alert('No Token');
+        console.log('No Token');
       }
       let httpOptions={
         headers:new HttpHeaders({
@@ -61,7 +61,7 @@ public appointments:Appointment[]=[];
   deleteAppointment(appointment:Appointment): Observable<any> {
     let token = this.authService.getToken();
     if(!this.authService.getToken()){
-      alert('No Token');
+      console.log('No Token');
     }
     let httpOptions = {
       headers: new HttpHeaders({
@@ -76,10 +76,10 @@ public appointments:Appointment[]=[];
     return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/users/${userId}`).pipe(
       map(appointments => appointments.map(a => {
         if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime + 'Z');
+          a.StartTime = new Date(a.StartTime);
         }
         if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime + 'Z');
+          a.EndTime = new Date(a.EndTime);
         }
         return a;
       }))
@@ -89,10 +89,10 @@ public appointments:Appointment[]=[];
     return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/doctor/${doctorId}`).pipe(
       map(appointments => appointments.map(a => {
         if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime + 'Z');
+          a.StartTime = new Date(a.StartTime);
         }
         if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime + 'Z');
+          a.EndTime = new Date(a.EndTime );
         }
         return a;
       }))

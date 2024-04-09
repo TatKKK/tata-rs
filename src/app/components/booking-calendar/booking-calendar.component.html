@@ -23,7 +23,7 @@
       <div class="hour-label">{{ hour }}:00 - {{ hour + 1 }}:00</div>
       <div *ngFor="let day of days" class="timeslot"  [ngClass]="getClassForSlot(day, hour)">
         <div *ngIf="isBookedByMe(day, hour)">
-          <span>My Booking</span>
+          <span> ჩემი <br>ჯავშანი</span>
           <button class="delete-appointment-btn" (click)="openDeleteDialog(day, hour)">
             <i class="pi pi-times"></i> 
           </button>
@@ -32,9 +32,9 @@
         <a *ngIf="isBookable(day, hour)" (click)="openDialogBasedOnAuth(day, hour, $event)">
           <span>+</span> დაჯავშნა
         </a>
-        <a *ngIf="isAppointmentBooked(day, hour)&& isLoggedIn" (click)="openDeleteDialog(day, hour)">
+        <!-- <a *ngIf="isAppointmentBooked(day, hour)&& isLoggedIn" (click)="openDeleteDialog(day, hour)">
           Cancel   
-    </a>
+    </a> -->
     </div>
     </div>
     <!-- <pre>{{ appointments | json }}</pre> -->
