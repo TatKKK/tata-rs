@@ -127,11 +127,7 @@ export class UserPageComponent implements OnInit {
     })
   }
 
-  // private checkUserRole(): void {
-  //   this.isDoctor = this.userRole === 'doctor';
-  //   this.isPatient = this.userRole === 'patient';
-  //   this.isAdmin = this.userRole === 'admin';
-  // }
+  
 
   totalAppointments: number = 0
 

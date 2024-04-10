@@ -189,10 +189,9 @@ export class BookingCalendarComponent implements OnInit {
     }
   }
   openDialogBasedOnAuth(day: Day, hour: number, event: MouseEvent) {
-    event.preventDefault();
-  
+    event.preventDefault();  
     if (this.isLoggedIn) {
-      this.openBookingSubmitDialog(day, hour);
+      this.openBookingSubmitDialog(day, hour, event);
     } else {
       this.openLogDialog();
     }
@@ -219,18 +218,23 @@ closeMainDialog(): void {
     }
 }
 
-  openBookingSubmitDialog(day:Day, hour:number){
+  openBookingSubmitDialog(day:Day, hour:number, event:Event){
+    event.stopPropagation();
+    
+  
     this.confirmationService.confirm({
       message:'გსურთ ვიზიტის დაჯავშნა?',
       header:'',
       icon:'',//raato ar gaqra
       acceptLabel: 'დიახ',
       rejectLabel: 'არა',
+      dismissableMask:true,
       
       accept:()=>{
         this.openBookingDialog(day,hour);
       },
       reject: () => {
+        
         this.dialogRef.close();
       }
       

@@ -11,25 +11,32 @@
 }
 
 .hour-label,.date-label,.timeslot {
-  width: 100px; 
+  /* width: 100px; 
   height: 60px; 
   border: 1px solid #ecf2f8;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex:1;
+  flex:1; */
+  width: 7.18rem;
+  height: 4.28rem;
+  border: 1px solid #ecf2f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 0 10px;
 }
 .timeslot{
   border-radius:7px;
-  width:6rem;
-  height:5rem;
+  width: 7.18rem;
+  height: 4.28rem;
   position:relative;
   text-align:center;
 }
-.date-label{
-  width:100px;
-  border:none;
-}
+
+
+
 .date-row, .hour-row {
   display: flex;
 }
@@ -75,7 +82,8 @@
 
 .date-label{
   background-color: #ecf2f8;
-  padding: 15px 0;
+  border:none;
+ 
 }
 .date-row div:first-child{
   background-color: #ecf2f8;
@@ -265,7 +273,7 @@ transition: 0.3s ease;
 
 .text-mutted{
   padding-left: 20px;
-  font-size: 16px;
+  font-size: 1em;
   line-height: 19.2px;
   opacity:30%; 
   }

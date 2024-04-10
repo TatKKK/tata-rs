@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy , ViewChild, ElementRef} from '@angular/core';
 import { FilterService } from '../../services/filter.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth/auth.service';
 
 
 @Component({
@@ -14,10 +15,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
  
   private dataFoundSubscription:Subscription | undefined;
   isDataFound:boolean=true;
+  userRole!:string;
 
-  constructor(private filterService: FilterService) {}
+  constructor(
+    private filterService: FilterService,
+    private authService:AuthService) {}
 
   ngOnInit(): void {
+    this.authService.getUserRole().subscribe(role => {
+      this.userRole = role;
+    });
     this.dataFoundSubscription = this.filterService.currentDataFound.subscribe(isDataFound => {
       this.isDataFound = isDataFound;
       if (!this.isDataFound) {

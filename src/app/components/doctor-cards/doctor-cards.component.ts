@@ -153,6 +153,7 @@ export class DoctorCardsComponent implements OnInit {
     this.doctorsService.incrementViewCount(doctorId)
   }
 
+
   loadNextPage (): void {
     if (this.currentPage * this.pageSize < this.totalCount) {
       this.loadDoctorsPaginated(++this.currentPage, this.pageSize)

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DoctorsService } from '../../services/doctors.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Subject, takeUntil } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-doctor',
@@ -17,10 +18,13 @@ export class AddDoctorComponent {
 
   private destroy$ = new Subject<void>()
   userRole!:string;
+  
+  isUploading:boolean=false;
 
   constructor(
     private fb: FormBuilder,
     private authService:AuthService,
+    private snackBar:MatSnackBar,
     private router: Router,
     private doctorsService: DoctorsService   ,
     private auth:AuthService
@@ -63,8 +67,6 @@ export class AddDoctorComponent {
     console.log(this.doctorForm.controls)
     console.log(this.doctorForm.value);
 console.log(this.doctorForm.errors);
-console.log(this.auth.getToken());
-console.log(this.auth.getUserId());
 
     console.log("Form Validity:", this.doctorForm.valid);
     if (this.doctorForm.valid) {
@@ -92,7 +94,7 @@ console.log(this.auth.getUserId());
   
       this.doctorsService.addDoctor(formData).subscribe({
         next: (res) => {
-          console.log("Registration successful.");
+          this.snackBar.open('Successfully registered', 'Close', { duration: 5000 });
           this.router.navigate(['/']);
         },
         error: (err) => {
@@ -103,17 +105,28 @@ console.log(this.auth.getUserId());
       console.error("Form is not valid");
     }
   }
-  
+
+  triggerFileInput(inputType: 'Image' | 'Cv'): void {
+    document.getElementById(inputType)?.click();
+    console.log(`${inputType} input clicked`);
+  }
+
   
   onFileChange(event: Event, type: 'Image' | 'Cv'): void {
+    this.isUploading = true;
     const element = event.currentTarget as HTMLInputElement;
-    console.log('changed');
     let files = element.files;
-    if (files) {
-      this.doctorForm.patchValue({ [type]: files[0] });
-      this.doctorForm.get(type)?.updateValueAndValidity();
+    if (files && files.length) {
+        this.doctorForm.patchValue({
+            [type]: files[0]
+        });
+        this.doctorForm.get(type)?.updateValueAndValidity();
+
+        setTimeout(() => {
+            this.isUploading = false; 
+            console.log(type + ' Upload complete');
+        }, 3000);
     }
-  }
-  
+}
 
 }

@@ -76,7 +76,14 @@ export class DoctorCategoryListComponent implements OnInit {
       next: () => {
         this.doctorsService.doctors = this.doctorsService.doctors.filter(
           doc => doc.id !== doctor.Id
-        )
+        );
+        this.messageService.add({
+          key: 'tl',
+          severity: 'info',
+          summary: 'Deleted',
+          detail: 'Deleted',
+          life: 2000
+        })
       },
       error: error => {
         console.error('Error deleting doctor:', error)

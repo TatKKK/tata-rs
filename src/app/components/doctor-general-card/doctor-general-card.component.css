@@ -48,7 +48,7 @@
     flex-direction:column;
 }
 .doctor-name{
-  font-size: 22px;
+  font-size: 18px;
   line-height: 26.4px;
   text-align: left;  
   margin-bottom:0;
@@ -60,7 +60,7 @@
 
 .experience-item h4 {
   margin-top: 0;  
-  font-size: 18px;
+  font-size: 16px;
   line-height: 21.6px;
 }
 .experience-item span{

@@ -7,3 +7,7 @@
 .container .sidebar{
     width:25%;
 }
+
+.hour-label{
+    font-size:14px;
+}

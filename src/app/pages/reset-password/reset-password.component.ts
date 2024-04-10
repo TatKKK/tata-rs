@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { PatientsService } from '../../services/patients.service';
-import { Observable,map, catchError, of, tap } from 'rxjs';
-import { pipe } from 'rxjs';
+import {  tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../services/user.service';
 import { MessageService } from 'primeng/api';
@@ -13,8 +12,6 @@ import { Router } from '@angular/router';
   styleUrl: './reset-password.component.css'
 })
 export class ResetPasswordComponent {
-
-
   Email: string = '';
   Password:string='';
   userEnteredCode: string = ''; 
@@ -42,7 +39,10 @@ export class ResetPasswordComponent {
           this.userEnteredCode = response.activationCode;
           this.showVerifyField = true;
 
-   this.messageService.add({ key: 'tl', severity:'info', summary: 'Activation Code', detail: 'Activation code is sent to your email. Check console'});
+   this.messageService.add({ key: 'tl',
+    severity:'info', 
+    summary: 'Activation Code', 
+    detail: 'Activation code is sent to your email. Check console'});
         },
         error: (error) => {
           console.error('Error creating activation code:', error);
@@ -69,10 +69,9 @@ export class ResetPasswordComponent {
     ).subscribe({
       next: isValid => {
         if (isValid) {
-          console.log(`Activation code verified for ${email}. Proceeding with registration.`);
+          console.log(`Activation code verified for ${email}`);
           this.isActivationCodeVerified = true; 
-          this.showVerifyField=false;
-          
+          this.showVerifyField=false;          
         } else {
           console.error('Invalid or expired activation code.');
           this.activationCodeInvalid = true; 
@@ -86,7 +85,7 @@ export class ResetPasswordComponent {
   }
    
   updatePassword(){
-    this.userService.updatePassword(this.Email, this.Password).subscribe({
+    this.userService.updatePassword(this.Email, this.newPassword).subscribe({
       next: (response) => {
         this.messageService.add({ key: 'tl', severity:'info', summary: 'Password update', detail: 'Password is successfully updated'});
         this.isActivationCodeVerified=false;

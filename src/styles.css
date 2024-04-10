@@ -101,7 +101,9 @@
   }
   
 .star {
-  color: grey; 
+  color:#042a47;
+  opacity:30%;
+    font-size: 22px;
 }
 
 .star.filled {
@@ -110,7 +112,7 @@
 }
 
 .container {
-  width: calc(100% - 5vw);
+  width: calc(100% - 7vw);
   margin: 0 auto;
 }
 .flex{
@@ -230,7 +232,8 @@ input::placeholder{
 /*|| sidebar */
 .app-sidebar{
 border: 1px solid #ECF2F8;
-height: 80vh;
+height: fit-content;
+
 }
 
 .disabled{
@@ -241,39 +244,55 @@ height: 80vh;
 
 /*-------------- USERS */
 
+.card-element {
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.card-element:first-child {
+  color: var(--color-active);   
+  font-size: 18px;
+}
+
+.card-element h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.card-element h4 {   
+  font-size: 18px;
+  line-height: 22px;
+  margin-bottom: 5px;
+}
+
+.card-element span {
+  font-size: 14px;
+  opacity: 30%;
+}
+
+
 .user-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-text-align:center;
+  justify-content: center;
   height: auto;
   border-radius: 10px;
   border: 1px solid var(--color-border-light); 
   box-shadow: 0 0 8px 0 var(--color-border-light); 
   padding: 50px;
-  gap:20px;
+  gap: 30px;
+  height:fit-content;
 }
+
 .user-image {
   border-radius: 50%;
   width: 157px;
   height: 157px;
-  object-fit:cover;
-  margin-bottom:10px;
+  object-fit: cover;
+  margin-bottom: 10px;
 }
 
-.user-info h4:first-of-type{
-  color:var(--color-active);   
-}
-.card-element h4{   
-font-size: 18px;
-line-height: 22px;
-letter-spacing: 0em;
-text-align: center;
-}
-.card-element span{
-  font-size:14px;
-  opacity:0.3;
-}
 
 .change-password, .my-bookings {
   cursor: pointer;
@@ -282,12 +301,23 @@ text-align: center;
   border-radius: 5px;  
   font-size: 18px;
 }
+
 .change-password:hover, .my-bookings:hover {
-  cursor:pointer;
+  background-color: var(--color-hover); 
 }
-a{
+
+
+.patient-info p {
+  margin: 10px 0;
+}
+
+
+a {
   text-decoration: none;
 }
+
+
+
 
 /* 
 
@@ -308,9 +338,9 @@ a{
 /* --- log in dialog */
 .p-dialog .p-dialog-header .p-dialog-title {
   color:var(--color-red);
-  font-size: 1em;
-    line-height: 19px;
-    letter-spacing: 0em;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
     text-align: center;
 }
 .p-dialog-header{
@@ -410,4 +440,11 @@ div.p-dialog-mask {
 }
 .app-book  .ng-star-inserted{
   width:100%;
+}
+
+
+.p-component {
+  
+  font-size: 0.8rem;
+  font-weight: normal;
 }

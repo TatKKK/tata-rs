@@ -88,13 +88,16 @@
     right:0;
     padding:10px;
   }
-  .load-more-doctors{
+  .load-more-doctors,
+  .load-previous-doctors{
     padding:0 50px;
     margin-top:20px;
     display:flex;
     justify-content: end;
   }
-  .load-more-doctors button{
+
+  .load-more-doctors button,
+  .load-previous-doctors button{
     border:none;
     background-color: transparent;
   }

@@ -54,6 +54,7 @@ export class UserService {
   updatePassword(email: string, password: string): Observable<any> {
     const url = `https://localhost:7042/api/Users/updatePassword/${email}`;
     const payload = { password }; 
+    console.log(payload);
     return this.http.put(url, payload);
   }
   
