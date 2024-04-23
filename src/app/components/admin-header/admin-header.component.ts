@@ -1,5 +1,4 @@
-import { Component , OnInit} from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { Component} from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -7,22 +6,16 @@ import { AuthService } from '../../services/auth/auth.service';
   templateUrl: './admin-header.component.html',
   styleUrl: './admin-header.component.css'
 })
-export class AdminHeaderComponent  implements OnInit {
+export class AdminHeaderComponent {
 
+  constructor(
+    private authService:AuthService
+  ){
+  }
 
-constructor(
-  private messageService:MessageService,
-  private authService:AuthService
-){}
-
-ngOnInit(): void {
-  
-   
-  
-}
-
-isAdmin:boolean=false;
-
+ get isAdmin(): boolean {
+    return this.authService.isAdminSync();
+  }
 
 }
 

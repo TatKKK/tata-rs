@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { DoctorsService } from '../../services/doctors.service'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { SignalRService } from '../../services/signal-r.service'
@@ -64,7 +64,6 @@ export class DoctorCardsComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     public dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
     public doctorsService: DoctorsService,
     private signalRService: SignalRService,
     public filterService: FilterService,
@@ -72,20 +71,7 @@ export class DoctorCardsComponent implements OnInit {
     private appointmentsService:AppointmentsService
   ) {}
 
-  // openDoctorDialog(doctor: Doctor, event:MouseEvent): void {
-  //   const dialogConfig = new MatDialogConfig();
-
-  //   dialogConfig.disableClose = false;
-  //   dialogConfig.autoFocus = true;
-  //   data: { id: doctor.Id }
-
-  //   this.dialog.open(ViewDoctorDialogComponent, dialogConfig);
-
-  //   event.preventDefault();
-  //   dialogConfig.position = {
-  //     'top': '0',
-  //     left: '0'
-  // };}
+  
  totalPages: number = 0
   subscribeToFilterChanges (): void {
     this.filterService.currentFilter.subscribe(filterTerm => {
@@ -112,8 +98,6 @@ export class DoctorCardsComponent implements OnInit {
     const isDataFound = this.filteredDoctors.length > 0
 
     this.filterService.updateDataFoundState(isDataFound)
-
-    this.cdr.detectChanges()
   }
 
   loadDoctorsPaginated (pageNumber: number, pageSize: number): void {
@@ -196,15 +180,12 @@ export class DoctorCardsComponent implements OnInit {
       resizable: true,
       dismissableMask: true,
       modal:true
-    });
-  
+    });  
     ref.onClose.subscribe((result) => {
       
     });
   }
-  
- 
-  
+    
   closeDialog():void{
     this.display=false;
   }

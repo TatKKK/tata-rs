@@ -5,7 +5,6 @@
 </div>
 <div *ngIf="isLoggedIn$ | async" class="user-greeting"> 
   <ng-container *ngIf="userRole$ | async as userRole">
-
     <ng-container *ngIf="userImageUrl$ | async as userImageUrl">
       <img [src]="'https://localhost:7042' + userImageUrl" alt="User Image"
       (click)="userRole === 'admin' ? goToAdminPage() : goToUserPage()">
@@ -13,18 +12,15 @@
     <span (click)="userRole === 'admin' ? goToAdminPage() : goToUserPage()">
       {{ userRole }}
     </span>
+    <a routerLink="/" (click)="logout()"> Logout</a>
   </ng-container>
-
-  <a routerLink="/" (click)="logout()"> Logout</a>
+ 
 </div>
-
-
 
 <div *ngIf="showLoginForm" class="login-popup-wrapper" (click)="closeLoginForm()">
     <div class="login-container" (click)="$event.stopPropagation()">
         <form class="login-form" #loginForm="ngForm" (ngSubmit)="authenticate()">
-          <h2 class="title">ავტორიზაცია</h2> 
-         
+          <h2 class="title">ავტორიზაცია</h2>          
             <div class="input-group">
               <input type="text" id="email" name="email" placeholder="მეილი / მობილური ნომერი" [(ngModel)]="login.email" required> 
             </div>
@@ -35,10 +31,8 @@
             </div>
             <div class="input-group">
               <button type="submit" [disabled]="!loginForm.valid" class="login-button">შესვლა</button>
-            </div>
-     
-        </form>
-        
+            </div>     
+        </form>        
       </div>   
 </div>
 

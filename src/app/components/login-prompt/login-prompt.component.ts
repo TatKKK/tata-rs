@@ -10,9 +10,7 @@ import { DynamicDialogComponent } from 'primeng/dynamicdialog'
   styleUrl: './login-prompt.component.css'
 })
 export class LoginPromptComponent {
-  // display: boolean = true
-  // visible: boolean = false
-
+  
   constructor (
     private router: Router,
     public dialogRef: DynamicDialogRef,
@@ -37,8 +35,7 @@ export class LoginPromptComponent {
       this.dialogRef.close()
     }
   }
-  closeOnOuterClick (): void {
-    console.log('clicked')
-    this.closeDialog()
-  }
+  // closeOnOuterClick (): void {
+  //   this.closeDialog();
+  // }
 }

@@ -1,15 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { AuthService } from '../../services/auth/auth.service'
 import { AppointmentsService } from '../../services/appointments.service'
-import { Doctor } from '../../models/doctor.model'
 import { ActivatedRoute } from '@angular/router'
-
-import { ChangeDetectorRef } from '@angular/core'
 import { UserService } from '../../services/user.service'
-import { Patient } from '../../models/patient.model'
 import { User } from '../../models/user.model'
 import { Appointment } from '../../models/appointment.model'
 import { Subject, takeUntil } from 'rxjs'
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-page',
@@ -17,106 +14,71 @@ import { Subject, takeUntil } from 'rxjs'
   styleUrl: './user-page.component.css'
 })
 export class UserPageComponent implements OnInit {
+  userId: number | null = null;
+  userRole: string = '';
+  isDoctor: boolean = false;
+  isPatient: boolean = false;
+  isAdmin: boolean = false;
 
-  Id: number | null = 0  
-  userId: number | null = null
-  userRole!: string
-  isDoctor: boolean = false
-  isPatient: boolean = false
-  isAdmin: boolean = false
-
-  doctorId: number = 0
-  patientId: number = 0
-
-  doctor!: Doctor
-  patient!: Patient
-  user: User = new User()
-  appointments: Appointment[] = []
+  user: User = {}; 
+  appointments: Appointment[] = []; 
+  totalAppointments: number = 0;
 
   private destroy$ = new Subject<void>();
 
-
-  constructor (
+  constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef,
     public appointmentsService: AppointmentsService,
-    public users: UserService
+    public userService: UserService,
   ) {}
-
-
-  checkUserRole () {
-    this.isDoctor = this.userRole === 'doctor'
-    this.isPatient = this.userRole === 'patient'
-    this.isAdmin = this.userRole === 'admin'
-  }
+  ngOnInit(): void {
+    this.userId = this.parseUserIdFromLocalStorage();
+    this.userRole = localStorage.getItem('userRole') || 'unknown';
+    this.checkUserRole();
   
-  ngOnInit (): void {
-    
-  this.Id = this.authService.getUserId();
-  console.log(this.Id);
-
-    this.userId = this.authService.getUserId();
-    this.authService.getUserRole().pipe(takeUntil(this.destroy$)).subscribe(role => {
-      this.userRole = role;
+    this.route.params.pipe(
+      switchMap(params => {
+        const userId = parseInt(params['userId'], 10); 
+        if (isNaN(userId)) {
+          console.error('Invalid user ID provided in the route');
+          return []; 
+        }
+        this.userId = userId;
+        return this.userService.getUser(this.userId);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: user => {
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(user));
+        if (user && user.Id) {
+          this.fetchAppointments(user.Id);
+        }
+      },
+      error: err => console.error('Failed to fetch user', err)
     });
-
-    
-  this.checkUserRole();
-
-  const storedUser = localStorage.getItem('user');
-  const storedAppointments = localStorage.getItem('appointments');
-
-  if (storedUser) {
-    this.user = JSON.parse(storedUser);
-  }
-
-  if (storedAppointments) {
-    const parsedAppointments: any[] = JSON.parse(storedAppointments);
-  
-    this.appointments = parsedAppointments.map(appointment => ({
-      ...appointment,
-     
-      StartTime: typeof appointment.StartTime === 'string' ? new Date(appointment.StartTime) : appointment.StartTime,
-    }));
-    
-    this.totalAppointments = this.appointments.length;
   }
   
+  private parseUserIdFromLocalStorage(): number | null {
+    const userIdString = localStorage.getItem('userId');
+    return userIdString !== null ? parseInt(userIdString, 10) : null;
+  }
   
 
-    this.route.params.subscribe(params => {
-      const email = params['email']
-      if (email) {
-        this.fetchUserAndAppointments(email);
-        console.log('appointments from userpage:', this.appointments);
-      } else {
-        console.log('No email provided in the route')
-      }
-    })
-  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  
-  private fetchUserAndAppointments (email: string): void {
-    this.users.getUserByEmail(email).subscribe({
-      next: user => {
-        this.user = user;
-        localStorage.setItem('user', JSON.stringify(user));
-        this.changeDetectorRef.detectChanges()
-        if (user && user.Id) {
-          this.fetchAppointments(user.Id)
-        }
-      },
-      error: err => console.error('Failed to fetch user', err)
-    })
+  checkUserRole(): void {
+    this.isDoctor = this.userRole === 'doctor';
+    this.isPatient = this.userRole === 'patient';
+    this.isAdmin = this.userRole === 'admin';
   }
-  
 
-  private fetchAppointments (userId: number): void {
+  
+  private fetchAppointments(userId: number): void {
     this.appointmentsService.getAppointmentsByUser(userId).subscribe({
       next: appointments => {
         this.appointments = appointments;
@@ -124,27 +86,6 @@ export class UserPageComponent implements OnInit {
         localStorage.setItem('appointments', JSON.stringify(appointments));
       },
       error: err => console.error('Error fetching appointments:', err)
-    })
+    });
   }
-
-  
-
-  totalAppointments: number = 0
-
-  // getToTal (): void {
-  //   if (this.userId) {
-  //     this.appointmentsService.getAppointmentsByUser(this.userId).subscribe({
-  //       next: appointments => {
-  //         this.totalAppointments = appointments.length
-  //         console.log(appointments)
-  //         console.log('total appointments')
-  //       },
-  //       error: err => {
-  //         console.error('Error fetching appointments:', err)
-  //       }
-  //     })
-  //   }
-  // }
-
-
 }

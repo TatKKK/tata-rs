@@ -1,9 +1,10 @@
 <div class="container ">
-     
-        <app-doctor-general-card *ngIf="!isAdmin" [doctor]="doctor" ></app-doctor-general-card>
-        <app-doctor-admin *ngIf="isAdmin"></app-doctor-admin>
+    <app-sidebar class="app-sidebar"></app-sidebar>     
+    <div class="content">
+        <app-doctor-general-card *ngIf="doctor" [doctor]="doctor" ></app-doctor-general-card>
+        <!-- <app-add-doctor *ngIf="isAdmin"></app-add-doctor>     -->
         <app-booking-calendar *ngIf="doctorId !== null "
         [doctorId]="doctorId"
         [appointments]="appointments"></app-booking-calendar>
-  
     </div>
+      </div>

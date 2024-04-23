@@ -11,8 +11,7 @@ export class BookingDialogComponent {
   notes:string='';
   display: boolean = true;
   
-  constructor( public dialogRef: DynamicDialogRef,
-    
+  constructor( public dialogRef: DynamicDialogRef,    
     )
   {
   

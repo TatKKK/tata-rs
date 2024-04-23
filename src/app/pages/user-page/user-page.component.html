@@ -1,18 +1,15 @@
 <div class="container">
   <app-sidebar class="app-sidebar grid-item"></app-sidebar>
   <app-user-info-card  class="user-info grid-item"
-  *ngIf="user.Email !==undefined && user.Email !== null &&userId !==null" [user]="user" [userId]="userId"
+  *ngIf="user&&userId!==null" [user]="user" [userId]="userId"
   [totalAppointments]="totalAppointments">
   </app-user-info-card>
 
-  
-  <!-- <app-doctor-info-card *ngIf="userRole === 'doctor'" class="user-info grid-item"></app-doctor-info-card> -->
-
-  <div class="grid-item">
-    <div class="card-element left" *ngIf="userRole !== 'admin'">
+   <div class="grid-item">
+    <div class="card-element left" *ngIf="userRole !== 'admin'&&userRole !=='doctor'">
       <h2>ჩემი ჯავშანი  <span>({{ this.totalAppointments}})</span></h2>          
     </div>
     <app-booking-calendar class="booking-calendar"
-    *ngIf="user && userId !== null&&Id !==null " [userId]="userId" [appointments]="appointments" [id]="Id"></app-booking-calendar>
+    *ngIf="user && userId !== null " [userId]="userId" [appointments]="appointments" ></app-booking-calendar>
   </div>
 </div>

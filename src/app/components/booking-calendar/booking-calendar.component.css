@@ -23,22 +23,31 @@
   border: 1px solid #ecf2f8;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
   flex: 1;
   padding: 0 10px;
+  position:relative;
 }
-.timeslot{
+/* .timeslot{
   border-radius:7px;
   width: 7.18rem;
   height: 4.28rem;
   position:relative;
   text-align:center;
-}
+} */
 
 
 
 .date-row, .hour-row {
   display: flex;
+ 
+}
+.date-row div:first-child{
+  border-radius: 10px 0 0 0;
+}
+.date-row div:last-child{
+  border-radius:0 10px 0 0;
 }
 
 .calendar {
@@ -48,11 +57,13 @@
 .my-booking{
   /* background: #DAFAEE; */
   background-color: #DAFAEE;
+  border-radius:7px;
 
 }
 
 .booked {
   background-color: #ff93a6;
+  border-radius:7px;
 }
 
 
@@ -98,10 +109,11 @@
   margin-bottom: 25px;
 }
 .navigation-controls span:first-child {
+  font-family: FiraGO;
   font-size: 18px;
   font-weight: 500;
   line-height: 21.6px;
-  text-align: left;
+  text-align: left;  
   border: none;
   color: var(--color-primary);
   margin-right:30px;
@@ -179,7 +191,7 @@
 }
 .calendar-container {
   padding: 50px 0;
-  margin-top:50px;
+  /* margin-top:50px; */
 }
 .calendar {
   max-width: 100%;
@@ -222,78 +234,50 @@ transition: 0.3s ease;
 .calendar a:hover{
   cursor:pointer;
 }
-.action-buttons{
+.calendar-buttons-row{
+  display:flex;
+  align-items: start;
+  gap:50px;
+}
+
+.calendar-buttons-col{
+  display:flex;
+  flex-direction: column;
+  gap:50px;
+}
+
+
+
+.action-buttons-row{
   display:flex;
   align-items:start;
   justify-content: end;
-  gap:30px;
-  margin-top:30px;
+  gap:15px;
 }
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  padding: 13px 30px;
-  border-radius: 50px;
-  font-size:18px;
-
-  transition: background-color 0.3s;
-}
-.button svg {
-  margin-right: 10px; 
-}
-
-
-.edit-button {
-  background-color: #ECF2F8; 
-  color: var(--color-active);
-}
-
-.edit-button:hover {
-  background-color:  #8fc3f7; 
-}
-
-.delete-button {
-  background-color: #FF93A6;
-  color:white;
-}
-
-.delete-button:hover {
-  background-color: #fb627e;
-  color:white;
-}
-
-.edit-with-span{
+.action-buttons-col{
   display:flex;
   flex-direction: column;
-  gap:5px;
+  align-items:start;
+  justify-content: end;
+  gap:15px;
 }
 
-.text-mutted{
-  padding-left: 20px;
-  font-size: 1em;
-  line-height: 19.2px;
-  opacity:30%; 
-  }
+.delete-appointment-btn{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  border-radius:50%;
+  border:none;
+  background-color:#ffffff;
+  height:1.5rem;
+  width:1.5rem;
+  position:absolute;
+  right:5px;
+  top:5px;
+  color:var(--color-red);
+  cursor:pointer;
+}
+.my-booking span{
+  color:#3ACF99;
 
-  .delete-appointment-btn{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    border-radius:50%;
-    border:none;
-    background-color:#ffffff;
-    height:2rem;
-    width:2rem;
-    position:absolute;
-    right:0;
-    top:0;
-    color:red;
-    cursor:pointer;
-  }
-  .my-booking span{
-    color:#3ACF99;
-
-  }
+}

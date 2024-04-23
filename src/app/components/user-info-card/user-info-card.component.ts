@@ -11,7 +11,7 @@ import { DoctorsService } from '../../services/doctors.service';
   styleUrl: './user-info-card.component.css'
 })
 export class UserInfoCardComponent implements OnInit {
-  // @Input() email!:string;
+  
   @Input() userId?:number;
   @Input() user!:User;
   @Input() totalAppointments!:number;
@@ -31,11 +31,20 @@ export class UserInfoCardComponent implements OnInit {
     this.authService.getUserRole().subscribe(role => {
       this.userRole = role;
     });
-    if (this.user&&this.userId !==null && this. userId !== undefined) {
-      this.appointmentsService.setCurrentUserId(this.userId);     
-      this.doctorsService.getDoctor(this.userId);
+    if (this.user && this.userId !== null && this.userId !== undefined
+      &&this.userRole !== 'patient'
+    ) {
+      this.doctorsService.getDoctor(this.userId).subscribe({
+        next: (doctor) => {
+          this.doctor = doctor;
+          console.log(this.doctor, 'doctor data retrieved');
+        },
+        error: (error) => {
+          console.error('Failed to load doctor data:', error);
+        }
+      });
     }
-  }
+    }
 
   getStars(score: number | undefined) {
     const validScore = score ?? 1;

@@ -2,7 +2,7 @@ import { DoctorDto } from '../models/doctor.model'
 import { Doctor } from '../models/doctor.model'
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Observable, of, throwError } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, map, switchMap, tap } from 'rxjs/operators'
 import { HttpErrorResponse } from '@angular/common/http'
 import { SignalRService } from './signal-r.service'
 import { Injectable } from '@angular/core'
@@ -140,40 +140,19 @@ export class DoctorsService {
       )
   }
 
-  editDoctor (formData: any): Observable<any> {
-    let token = this.authService.getToken()
-    if (!this.authService.isAdmin()) {
-      this.messageService.add({
-        key: 'tl',
-        severity: 'info',
-        summary: 'Unauthorized',
-        detail: 'Not admin',
-        life: 2000
-      })
-    }
+  editDoctor(id: number, doctorData:any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
 
-    if (!this.authService.getToken()) {
-      this.messageService.add({
-        key: 'tl',
-        severity: 'error',
-        summary: 'Unauthorized',
-        detail: 'No Token',
-        life: 2000
-      })
-    }
-    let httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${token}`
-      })
-    }
-    return this.http
-      .put<any>('https://localhost:7042/api/Doctors', formData, httpOptions)
+    return this.http.put(`https://localhost:7042/api/Doctors/${id}`, JSON.stringify(doctorData), { headers })
       .pipe(
         catchError(error => {
-          console.error('Error editing doctor:', error)
-          return throwError(() => error)
+          console.error('Error updating doctor:', error);
+          return throwError(() => new Error('Failed to edit doctor'));
         })
-      )
+      );
   }
 
   deleteDoctor (doctor: Doctor): Observable<any> {

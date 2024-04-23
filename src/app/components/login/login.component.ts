@@ -13,33 +13,33 @@ import { Subject, takeUntil } from 'rxjs';
 })
 
 export class LoginComponent {
-  userRole:string='';
-  login:Login=new Login();
-  greeting:string="";
-  token:string="";
-  isLoggedIn!:boolean;
-
+  userId: number | null = null;
+  userRole: string = '';
+  login: Login = new Login();
+  // token: string = "";
+  isLoggedIn: boolean = false;
   showLoginForm = false;
-  isAdmin=false;
-
   userName: string = '';
-userImageUrl:string='';
-
-// private destroy$ = new Subject<void>();
-
-
-  showAuth=true;
-
-
-userRole$: Observable<'patient' | 'doctor' | 'admin' | 'unknown'>;
+  userImageUrl: string = '';
+  userRole$: Observable<'patient' | 'doctor' | 'admin' | 'unknown'>;
   userImageUrl$: Observable<string>;
+  showAuth:boolean=false;
   isLoggedIn$: Observable<boolean>;
 
-  ngOnInit(): void {
-    this.userImageUrl$ = this.authService.getImageUrl();
-   
-    console.log('aaaaaaaaaaaaaaa', this.userRole);
+  private destroy$ = new Subject<void>();
 
+
+
+  constructor(
+    private router: Router, 
+    private authService: AuthService
+  ) {
+    this.userRole$ = this.authService.getUserRole();
+    this.userImageUrl$ = this.authService.getImageUrl();
+    this.isLoggedIn$ = this.authService.isLoggedIn();
+  }
+
+  ngOnInit(): void {
     this.authService.isLoggedIn().subscribe(loggedInStatus => {
       this.isLoggedIn = loggedInStatus;
       if (this.isLoggedIn) {
@@ -48,73 +48,95 @@ userRole$: Observable<'patient' | 'doctor' | 'admin' | 'unknown'>;
         this.showAuth = true;
       }
     });
+    this.userRole$.pipe(takeUntil(this.destroy$)).subscribe(role => {
+      this.userRole = role;
+      this.isLoggedIn = role !== 'unknown';
+      if (this.isLoggedIn) {
+        this.showLoginForm = false;
+      }
+    });
+
+    this.userRole = this.authService.getUserRoleSync();
+
+    this.userImageUrl$.pipe(takeUntil(this.destroy$)).subscribe(imageUrl => {
+      this.userImageUrl = imageUrl || 'defaultImageUrl';
+    });
+  
   }
 
-  // ngOnDestroy(): void {
-  //   this.destroy$.next();
-  //   this.destroy$.complete();
-  // }
 
-  toggleLoginForm() {
+  authenticate(): void {
+       this.authService.authenticate(this.login).subscribe({
+        next: (res) => {
+          console.log(res);
+          console.log(res.AccessToken);
+            if (!res || !res.AccessToken) {
+                console.error('Login failed: No user data returned');
+                this.isLoggedIn = false;
+                return; 
+            }            
+            this.isLoggedIn = true;
+            this.showLoginForm = false;
+            this.routeBasedOnUserRole();
+        },
+        error: (err) => {
+            console.error('Login error:', err);
+            this.isLoggedIn = false;
+        }
+    });
+}
+
+private routeBasedOnUserRole(): void {
+    if (this.userRole === 'admin') {
+      this.router.navigate(['/doctorsList']);
+    } else {
+        this.routeUser();
+    }
+}
+
+private routeUser(): void {
+  const userIdString = localStorage.getItem('userId');
+  console.log('Retrieved User ID from localStorage:', userIdString);
+
+  if (userIdString) {
+    this.userId = parseInt(userIdString, 10);
+    this.router.navigate(['/userPage', this.userId]);
+  } else {
+    console.error('No userId found in localStorage');
+  }
+}
+
+
+goToAdminPage(): void {
+  this.router.navigate(['/doctorsList']);
+}
+
+goToUserPage(): void {
+  const userIdString = localStorage.getItem('userId');
+  this.userId = userIdString !== null ? parseInt(userIdString, 10) : null;
+ 
+  if (this.userId) {
+    this.router.navigate(['/userPage',this.userId]);
+  } else {
+    console.error('No userId found in localStorage');
+  }
+}
+
+  logout(): void {
+    this.authService.logout();
+    this.isLoggedIn = false;
+  }
+closeLoginForm():void{
+  this.showLoginForm=false;
+}
+  toggleLoginForm(): void {
     this.showLoginForm = !this.showLoginForm;
   }
 
-constructor(private router:Router, 
-  private authService:AuthService,
-  private dialogRef:DynamicDialogRef){  
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-    this.userRole$ = this.authService.getUserRole();
-    this.userImageUrl$ = this.authService.getImageUrl();
-    this.isLoggedIn$ = this.authService.isLoggedIn();
-   
-}
-
-authenticate(): void {
-  this.authService.authenticate(this.login).subscribe({
-    next: (res) => {
-      this.userImageUrl = this.authService.getImageUrlFromToken(res.AccessToken) || 'defaultImageUrl';
-      this.userName = this.authService.getUserNameFromToken(res.AccessToken) || 'Anonymous User';
-      this.userRole=this.authService.getUserRoleFromToken(res.AccessToken) || 'Unknown';
-      // this.authService.getUserRole().subscribe(role => {
-      //   this.userRole = role;
-      // });
-      this.isLoggedIn=this.authService.isLoggedInSync();
-      if(this.login.email){
-        this.authService.setUserEmail(this.login.email);
-      }
-      if (this.isLoggedIn) {
-        this.showLoginForm = false;
-        this.showAuth = false;
-        if (this.userRole === 'admin') { 
-            this.router.navigate(['/doctorsList']); 
-          } else {
-            this.router.navigate(['/userPage', this.login.email]);
-          }
-        } else {
-        console.error('Could not retrieve user ID from token');
-      }
-    }
-  });
-}
-goToAdminPage():void{
-  this.router.navigate(['/doctorsList']);
-}
-goToUserPage():void{
-  this.authService.getUserEmail().subscribe(email => {
-    this.router.navigate(['/userPage', email]);
-  });
-}
-
-
-closeLoginForm() {
-  this.showLoginForm = false;
-}
-
-
-logout():void{
-  this.authService.logout();
-  this.showAuth=true;
-}
-
-
+  
 }

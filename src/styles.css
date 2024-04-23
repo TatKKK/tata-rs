@@ -3,58 +3,49 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-.table-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+
+
+:root{
+   --color-primary:#053354;
+  --color-primary-hover:#053350;
+  --color-red: #FF2C52;
+  --color-secondary:#FFFFFF;
+  --color-background-light: #F0FAFF;
+  --color-border-light: #ECF2F8;
+  --color-hover:#78b3ed;
+  --color-active:#18A4E1;
+  --color-placeholder:#0533544D;
+  --color-bg-light:#F0F4F8;
+
+  --shadow-small:0px 4px 30px 0px #0533540D;
+  --shadow-medium:0 0.2rem 0.7rem 0.1rem #0533540D;
+  --shadow-large:0 0.4rem 3.2rem 0 #00000012, 0 0 0.2rem 0 #0000001a;
+
+
+  --fs-1:0.875rem;
+  --fs-2:1rem;
+  --fs-3:1.125rem;
+  --fs-5:1.375rem;
+  --fs-6:1.625rem;
+  --fs-7:3rem;
+
+  --lh-1:1.2rem;
+  --lh-2:1.35rem;
+  --lh-3:1.65rem;
+  --lh-4:1.95rem;
+  --lh-6:3.6rem;
 }
 
-.table-container::-webkit-scrollbar {
-  display: none;
-}
-
-
-.p-scrollpanel-grabbed {
-  background-color: var(--color-primary);
-  height:10%;
-  border-radius:25px;
-}
-.p-scrollpanel .p-scrollpanel-wrapper {
-  background-color: transparent;
-}
-
-
-.p-scrollpanel .p-scrollpanel-wrapper::-webkit-scrollbar-thumb {
-  background-color: rgb(46, 20, 197);
-  border-radius: 10px; 
-  width:20px;
-  height:10%;
-}
-
-.p-scrollpanel .p-scrollpanel-wrapper::-webkit-scrollbar-track {
-  background: red;
-}
-
-.p-scrollpanel .p-scrollpanel-wrapper::-webkit-scrollbar {
-  width: 20px; 
-}
-
-.p-scrollpanel .p-scrollpanel-wrapper {
-  scrollbar-width:auto; 
-  scrollbar-color: grey;
-}
-
-:root {
-    --color-primary:#053354;
-    --color-primary-hover:#053350;
-    --color-red: #FF2C52;
-    --color-secondary:#FFFFFF;
-    --color-background-light: #F0FAFF;
-    --color-border-light: #ECF2F8;
-    --color-hover:#78b3ed;
-    --color-active:#18A4E1;
-    --color-placeholder:#0533544D;
-    --color-bg-light:#F0F4F8;
-
+@media (max-width: 1620px) {
+  :root {
+    --fs-1: 0.5rem;
+    --fs-2: 0.8rem;
+    --fs-3: 0.9rem;
+    --fs-5: 1rem;
+    --fs-6: 1.4rem;
+    --fs-7: 2rem;
+  }
 }
 
 *, *::before, *::after {
@@ -88,8 +79,6 @@
   }
   
   body {
-    font-size:14px!important;
-    line-height: 21.6px;
     font-family: 'FiraGO', sans-serif!important; 
     font-weight: 400; 
     color:var(--color-primary);
@@ -103,11 +92,12 @@
 .star {
   color:#042a47;
   opacity:30%;
-    font-size: 22px;
+  font-size: 22px;
 }
 
 .star.filled {
   color: gold; 
+  opacity:100%;
   font-size:22px;
 }
 
@@ -233,56 +223,51 @@ input::placeholder{
 .app-sidebar{
 border: 1px solid #ECF2F8;
 height: fit-content;
-
+/* width:20%; */
 }
 
 .disabled{
   opacity:30%;
 }
 
-
-
 /*-------------- USERS */
-
 .card-element {
   text-align: center;
   color: var(--color-primary);
 }
 
 .card-element:first-child {
-  color: var(--color-active);   
-  font-size: 18px;
+  font-size: var(--fs-3);
 }
 
 .card-element h2 {
-  font-size: 22px;
+  font-size: var(--fs-5);
   font-weight: 700;
+  margin-bottom:0;
 }
 
 .card-element h4 {   
-  font-size: 18px;
-  line-height: 22px;
-  margin-bottom: 5px;
+  font-size: var(--fs-3);
+  line-height: var(--lh-2);
+   margin-bottom: 0; 
 }
 
 .card-element span {
-  font-size: 14px;
+  font-size: var(--fs-2);
   opacity: 30%;
 }
-
-
 .user-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: auto;
+  justify-content: start;
+  height: 100%;
   border-radius: 10px;
   border: 1px solid var(--color-border-light); 
   box-shadow: 0 0 8px 0 var(--color-border-light); 
   padding: 50px;
   gap: 30px;
-  height:fit-content;
+  /* height:fit-content; */
 }
 
 .user-image {
@@ -293,84 +278,64 @@ height: fit-content;
   margin-bottom: 10px;
 }
 
-
 .change-password, .my-bookings {
   cursor: pointer;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;  
-  font-size: 18px;
+  font-size: var(--fs-3);
 }
 
 .change-password:hover, .my-bookings:hover {
   background-color: var(--color-hover); 
 }
 
-
 .patient-info p {
   margin: 10px 0;
 }
-
 
 a {
   text-decoration: none;
 }
 
 
-
-
-/* 
-
-.card-title{
-  margin-bottom:0;
-} */
-
-
-
-/*------- primeng dialogs  aq tu ar chavsvi ar muShaobs */
-
-/* 
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
-@import "primeicons/primeicons.css"; */
-
-
 /* --- log in dialog */
-.p-dialog .p-dialog-header .p-dialog-title {
-  color:var(--color-red);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 19.2px;
-    text-align: center;
+.custom-login .p-dialog-header .p-dialog-title,
+.custom-login .p-component { 
+  font-size: var(--fs-2);
+  line-height: var(--lh-1);
+  text-align: center;
 }
-.p-dialog-header{
+.custom-login .p-dialog-header{
   justify-content: center;
-  padding: 1rem 0 0 0;
+  padding: 1rem 10% 0;
 }
-.p-button-link{
+.custom-login .p-button-link{
   padding:5px;
 }
-.login span{
-  font-size: 1em;
-  line-height: 19px;
-  letter-spacing: 0em;
-  text-align: center;
+.custom-login .p-dialog-header .p-dialog-title{
+  color:var(--color-red);
+  white-space: nowrap; 
+  /* overflow: hidden;
+  text-overflow: ellipsis; */
+}
+.custom-login .p-component{
   color:var(--color-primary);
+  font-weight: 400;
 }
 
-.p-dialog .p-dialog-content {
+.custom-login .p-dialog-content {
   color: var(--color-primary);
   display: flex;
   justify-content: center;
 }
-p-footer{
+.custom-login p-footer{
   padding-bottom: 1rem;
     display: flex;
 }
-div.p-dialog-mask {
-	
+/* div.p-dialog-mask {	
 	pointer-events: auto;
-}
+} */
 
 .p-dialog .p-dialog-header-icons{
   display:none;
@@ -411,40 +376,63 @@ div.p-dialog-mask {
 .p-icon-wrapper {
   display: none;
 }
+.custom-book .ng-star-inserted {
 
+  padding-bottom: 0;
+}
 
 .custom-ngBtn .p-button-label {
   font-family: 'FiraGO', sans-serif;
-  font-size: 1rem; 
+  font-size: var(--fs-3);
   font-weight: 500;
   line-height: 1.35;
   text-align: center;
   color: #FFFFFF!important;
 }
 
-.app-book .p-dialog-header .p-dialog-title {
-  color: var(--color-primary);
-  font-weight: 500;
+.custom-book .p-dialog-header .p-dialog-title {
+  font-family: FiraGO;
+font-size: var(--fs-3);
+font-weight: 400;
+line-height: 19.2px;
+text-align: left;
+color:var(--color-primary);
+
 }
 
-.app-book .p-dialog .p-dialog-content {
+}
+
+.custom-book .p-dialog .p-dialog-content {
   display: flex;
   flex-direction: column;
  
 }
 
-.app-book .p-footer {
+.custom-book .p-footer {
   display: flex;
   justify-content: end;
   padding:15px 0;
 }
-.app-book  .ng-star-inserted{
+.custom-book  .ng-star-inserted{
   width:100%;
 }
 
-
-.p-component {
-  
+.p-component {  
   font-size: 0.8rem;
   font-weight: normal;
 }
+
+
+/*--- SCROLLBAR */
+
+.p-scrollpanel-bar-y{
+  width:10px!important;
+  height:34px!important;
+  border-radius:5px!important;
+  background-color: var(--color-primary);
+  opacity: 1 !important;
+ }
+
+ .p-scrollpanel-content{
+  padding:0;
+ }

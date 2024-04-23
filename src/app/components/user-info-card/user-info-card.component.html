@@ -1,30 +1,29 @@
 <div class="user-card">
  
     <div class="card-element">
-      <img [src]="'https://localhost:7042' + user?.ImageUrl" alt="Doctor image" class="user-image">
+      <img [src]="'https://localhost:7042' + user.ImageUrl" alt="Doctor image" class="user-image">
   
-      <h4 class="doc-name">{{ user?.Fname }} {{ user?.Lname }}</h4>
-      <span><b>{{this.userRole}} </b></span>
-      <!-- <h4>{{user?.Category}}</h4> -->
-      <!-- <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
-        <i class="star" [class.filled]="filled">&#9733;</i>
-      </span> -->
-    </div>
-    <h2 *ngIf="this.userRole=== 'doctor'">{{doctor?.Category}} </h2>
+      <h4 class="doc-name" *ngIf="this.userRole=== 'doctor'">{{ user.Fname }} {{ user.Lname }}</h4>
+      <h4 >{{this.userRole}}</h4>
+      <h4 *ngIf="this.userRole=== 'doctor'&&doctor" class="doc-category"> <span>
+        {{doctor.Category}}
+      </span></h4>
     <div class="rating" *ngIf="this.userRole=== 'doctor'">
       <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
         <i class="star" [class.filled]="filled">&#9733;</i>
       </span>
     </div>
+    </div>
+
     <div class="card-element">
     </div>
     <div class="card-element">
       <h4> პირადი ნომერი</h4>
-      <span> {{user?.IdNumber}} </span>
+      <span> {{user.IdNumber}} </span>
     </div>
     <div class="card-element">
       <h4>Email:</h4>
-      <span>{{user?.Email}} </span>
+      <span>{{user.Email}} </span>
     </div>
     <div class="card-element">
       <a routerLink="/resetPassword">

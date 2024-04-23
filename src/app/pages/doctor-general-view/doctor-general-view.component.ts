@@ -32,8 +32,7 @@ constructor( private authService:AuthService,
   public appointmentsService:AppointmentsService){  
 }
 
-ngOnInit(): void {
-  
+ngOnInit(): void {  
   this.Id=this.authService.getUserId();
   this.route.params.subscribe(params => {
     const id = params['id'];

@@ -3,19 +3,19 @@
   <div class="mokledra">
     <div class="user-card">
       <div class="section-1">
-        <img [src]="'https://localhost:7042' + doctor?.ImageUrl" alt="Doctor image" class="user-image">
+        <img [src]="'https://localhost:7042' + doctor.ImageUrl" alt="Doctor image" class="user-image">
   
-        <h4 class="doc-name">{{ doctor?.Fname }} {{ doctor?.Lname }}</h4>
+        <h4 class="doc-name">{{ doctor.Fname }} {{ doctor.Lname }}</h4>
         <span><b>ექიმი</b></span>
-        <h4>{{doctor?.Category}}</h4>
-        <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
+        <h4>{{doctor.Category}}</h4>
+        <span *ngFor="let filled of getStars(doctor?.Score); let i = index">`
           <i class="star" [class.filled]="filled">&#9733;</i>
         </span>
       </div>
      
       <div class="section-2">
         <div class="card-element" *ngIf="isEditMode; else viewTemplate">
-          <div class="edit-flex" (click)="toggleEditMode()">
+          <div class="edit-flex" >
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_35_2184)">
                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -30,7 +30,7 @@
             </svg>
             <h4> პირადი ნომერი</h4>
           </div>
-          <input [(ngModel)]="doctor.IdNumber" type="text" name="IdNumber" placeholder="{{doctor?.IdNumber}}">     
+          <input [(ngModel)]="doctor.IdNumber" type="text" name="IdNumber" placeholder="{{doctor.IdNumber}}">     
         </div>
         <ng-template #viewTemplate>
           <div class="card-element">
@@ -49,7 +49,7 @@
               </svg>
               <h4> პირადი ნომერი</h4>
             </div>
-            <span> {{doctor?.IdNumber}} </span>
+            <span> {{doctor.IdNumber}} </span>
           </div>
         </ng-template>
         <div class="card-element" *ngIf="isEditMode; else viewTemplate">
@@ -68,7 +68,7 @@
             </svg>
             <h4>Email:</h4>
           </div>
-          <input [(ngModel)]="doctor.Email" type="text" name="Email" placeholder="{{doctor?.Email}}"> 
+          <input [(ngModel)]="doctor.Email" type="text" name="Email" placeholder="{{doctor.Email}}"> 
         </div>
         <ng-template #viewTemplate>
           <div class="card-element">
@@ -87,7 +87,7 @@
               </svg>
               <h4>Email:</h4>
             </div>
-            <span>{{doctor?.Email}} </span>
+            <span>{{doctor.Email}} </span>
           </div>
 
         </ng-template>
@@ -125,7 +125,7 @@
       <button class="button add-button" >
        <a routerLink="/addDoctor"> + დამატება</a>
       </button>
-      <button class="button edit-button" (click)="editDoctor(doctor)">
+      <button class="button edit-button" (click)="toggleEditMode()">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clip-path="url(#clip0_35_2130)">
             <path fill-rule="evenodd" clip-rule="evenodd"

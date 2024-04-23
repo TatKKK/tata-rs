@@ -13,16 +13,16 @@ import { AuthGuardService as AuthGuard} from './services/auth/auth-guard.service
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { EditPageAdminComponent } from './pages/edit-page-admin/edit-page-admin.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-import { AdduserComponent } from './pages/adduser/adduser.component';
+import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-general-view.component';
 
 const routes: Routes = [
   {path:'', component:HomeComponent},
   {path: 'resetPassword', component: ResetPasswordComponent},
-  {path: 'userPage/:email',  component:UserPageComponent},
+  { path: 'userPage/:userId', component: UserPageComponent },
   {path:'addPatient', component:AddPatientComponent},
   {path:'addDoctor', component:AddDoctorComponent, canActivate: [AuthGuard]},
-  {path:'addUser', component:AdduserComponent},
+  {path:'addUser', component:AddAdminComponent},
   {path:'login', component:LoginComponent},
   {path: 'doctors/:category', component:DoctorCategoryListComponent }, 
   // {path:'editPage/:id', component:EditPageAdminComponent, canActivate: [AuthGuard]},

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core'
 import { AuthService } from '../../services/auth/auth.service'
 import { Doctor } from '../../models/doctor.model'
-// import { ChangeDetectorRef } from '@angular/core'
 import { AppointmentsService } from '../../services/appointments.service'
 import { Appointment } from '../../models/appointment.model'
 import { DynamicDialogConfig } from 'primeng/dynamicdialog'
@@ -40,21 +39,14 @@ export class ViewDoctorComponent implements OnInit {
   constructor (
     public ref: DynamicDialogRef,
     private authService: AuthService,
-    // private changeDetectorRef: ChangeDetectorRef,
     public appointmentsService: AppointmentsService,
     public config: DynamicDialogConfig,
     public dialogRef: DynamicDialogRef
   ) {}
 
-  // setUserDetails (token: string): void {
-  //   this.authService.setUserRole(token)
-  //   this.isAdmin = this.authService.isAdmin()
-  //   this.userRole = this.authService.getUserRole()
-  // }
-
   ngOnInit(): void {
-    this.Id = this.authService.getUserId();
-    console.log(this.Id);
+    const idString = localStorage.getItem('userId');
+this.Id = idString !== null ? parseInt(idString, 10) : null 
     const userRole = localStorage.getItem('userRole');
     if (userRole) {
       this.userRole = userRole;
@@ -69,7 +61,6 @@ export class ViewDoctorComponent implements OnInit {
         
     if (this.config.data.appointments) {
       this.appointments = this.config.data.appointments;
-      console.log('Appointments passed to dialog:', this.appointments);
     } else {
       console.error('No appointments passed to the dialog.');
     }

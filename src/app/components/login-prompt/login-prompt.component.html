@@ -1,13 +1,11 @@
-<div class="login" (click)="closeOnOuterClick()">
-  <p-dialog header="Header" [ngStyle]="{width: '50vw', color:'red-500'} " [blockScroll]=true
-    (click)="$event.stopPropagation()">
-    <p class="red" [style]="{color:'red'}">
-      დასაჯავშნად გთხოვთ გაიაროთ
-    </p>
-  </p-dialog>
-  <p-footer>
-    <p-button label="ავტორიზაცია" [link]="true" (click)="navigateAndClose('/')"></p-button>
-    <p-button label="ან" [link]="true"></p-button>
-    <p-button label="რეგისტრაცია" [link]="true" (click)="navigateAndClose('/addPatient')"></p-button>
-  </p-footer>
-</div>
+<p-dialog header="Header" 
+  (click)="$event.stopPropagation()">
+  <p class="red" [style]="{color:'red'}">
+    დასაჯავშნად გთხოვთ გაიაროთ
+  </p>
+</p-dialog>
+<p-footer>
+  <p-button label="ავტორიზაცია" [link]="true" (click)="navigateAndClose('/')"></p-button>
+  <p-button label="ან" [link]="true"></p-button>
+  <p-button label="რეგისტრაცია" [link]="true" (click)="navigateAndClose('/addPatient')"></p-button>
+</p-footer>

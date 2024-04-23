@@ -1,10 +1,10 @@
 
-    <div class="user-card">
+    <div class="general-card">
         <div class="section-1">
-            <img [src]="'https://localhost:7042' + doctor?.ImageUrl" alt="Doctor image" class="user-image">
+            <img *ngIf="doctor"    [src]="'https://localhost:7042' + doctor.ImageUrl" alt="Doctor image" class="user-image">
             <div class="section-1-data">
-                <h2 class="doctor-name">{{ doctor?.Fname }} {{ doctor?.Lname }}</h2>
-                <span>{{doctor?.Category}} </span>
+                <h2 class="doctor-name">{{ doctor.Fname }} {{ doctor.Lname }}</h2>
+                <span class="doctor-category">{{doctor.Category}} </span>
                 <div class="rating">
                   <span *ngFor="let filled of getStars(doctor?.Score); let i = index">
                     <i class="star" [class.filled]="filled">&#9733;</i>

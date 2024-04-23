@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { DoctorsService } from '../../services/doctors.service';
 import { Doctor } from '../../models/doctor.model';
 import { AppointmentsService } from '../../services/appointments.service';
-import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 
 
@@ -16,20 +15,16 @@ export class DoctorAdminComponent {
 @Input() doctorId!:number;
 @Input() userId!:number;
 
+selectedDoctor!:Doctor;
+
   
   isEditMode: boolean = false;
 
-  toggleEditMode(): void {
-    console.log('toggled?');
-    this.isEditMode = !this.isEditMode;
-  }
   
   constructor(
     private auth:AuthService,
     private doctorsService: DoctorsService,
-    public appointmentsService: AppointmentsService,
-    private changeDetectorRef: ChangeDetectorRef,
-    
+    public appointmentsService: AppointmentsService,    
   ){}
 
   ngOnInit(): void {
@@ -58,17 +53,40 @@ export class DoctorAdminComponent {
       }
     })
   }
-
-  editDoctor(doctor:Doctor):void{
-    this.doctorsService.editDoctor(doctor).subscribe({
-      next:()=>{
-        this.doctorsService.doctors=this.doctorsService.doctors.filter(doc=>doc.id!==doctor.Id);
-        this.doctorsService.refreshDoctors();
-      },
-      error:(error)=>{
-        console.error('Error deleting doctor:', error);
-      }
-    })
+  toggleEditMode(event?: Event): void {
+    console.log('Edit mode toggled');
+    if (event) {
+      event.stopPropagation();
+    }
+    this.isEditMode = !this.isEditMode;
+    if (!this.isEditMode) {
+      this.saveDoctorChanges();
+    }
   }
+  
+  saveDoctorChanges(): void {
+    const doctorData = {
+      Fname: this.selectedDoctor.Fname ?? '',
+      Lname: this.selectedDoctor.Lname ?? '',
+      Email: this.selectedDoctor.Email ?? '',
+      IdNumber: this.selectedDoctor.IdNumber ?? ''
+    };
+    
+    if (this.selectedDoctor.Id) {
+      this.doctorsService.editDoctor(this.selectedDoctor.Id, doctorData)
+        .subscribe({
+          next: (response) => {
+            console.log('Doctor updated successfully!', response);
+          },
+          error: (error) => {
+            console.error('Failed to update doctor', error);
+          }
+        });
+    }
+  }
+  
+  
+  
+  
 
 }

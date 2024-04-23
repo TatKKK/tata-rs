@@ -30,7 +30,6 @@ import { DoctorGeneralCardComponent } from './components/doctor-general-card/doc
 import { Router, RouterModule } from '@angular/router';
 import { DoctorAdminComponent } from './components/doctor-admin/doctor-admin.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RegistrationSuccessComponent } from './dialogs/registration-success/registration-success.component';
 import { DoctorsListAdminComponent } from './pages/doctors-list-admin/doctors-list-admin.component';
 import { AdminHeaderComponent } from './components/admin-header/admin-header.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
@@ -50,8 +49,13 @@ import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { AddUserAdminComponent } from './pages/add-user-admin/add-user-admin.component';
 import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-general-view.component';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonsComponent } from './components/buttons/buttons.component';
+import { AddAdminComponent } from './pages/add-admin/add-admin.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -61,7 +65,7 @@ import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-g
     FooterComponent,
    AdduserComponent,
      DoctorCardsComponent,
-   SidebarComponent,
+   DoctorGeneralViewComponent,
    DoctorCategoryListComponent,
    AddPatientComponent,
    UserPageComponent,
@@ -71,7 +75,6 @@ import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-g
    BookingCalendarComponent,
    DoctorGeneralCardComponent,
    DoctorAdminComponent,
-   RegistrationSuccessComponent,
    DoctorsListAdminComponent,
    AdminHeaderComponent,
    PageNotFoundComponent,
@@ -80,8 +83,10 @@ import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-g
    LoginPromptComponent,
    BookingDialogComponent,
    ResetPasswordComponent,
-   AddUserAdminComponent,
-   DoctorGeneralViewComponent
+   ButtonsComponent,
+   SidebarComponent,
+   AddAdminComponent,
+  
    
   ],
   imports: [
@@ -107,7 +112,8 @@ import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-g
     ButtonModule,
     ScrollPanelModule,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    CalendarModule
 
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'ka-GE' }, 

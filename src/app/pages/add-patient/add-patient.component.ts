@@ -100,8 +100,13 @@ export class AddPatientComponent implements OnInit {
           const loginInfo: Login = { email: email, password: password }
           this.authService.authenticate(loginInfo).subscribe({
             next: authRes => {
-              this.router.navigate(['/userPage', email])
-            },
+              const userId = this.authService.getUserId();
+            if (userId) {
+              this.router.navigate(['/userPage', userId]);
+            } else {
+              console.error('User ID not found after authentication');
+            }
+          },
             error: authErr => {
               console.error('Authentication error:', authErr)
             }
@@ -115,6 +120,10 @@ export class AddPatientComponent implements OnInit {
       console.error('Form is not valid')
     }
   }
+
+  
+  
+  
 
   triggerFileInput (): void {
     document.getElementById('Image')?.click()

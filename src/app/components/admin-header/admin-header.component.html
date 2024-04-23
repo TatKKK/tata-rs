@@ -1,19 +1,18 @@
-<div class="container">
-  <div class="panel">
-    <div class="reg-cat-doc">
-      <div class="burger-icon">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <a routerLink="/addDoctor" routerLinkActive="active-link">რეგისტრაცია</a>
-      <a routerLink="/sidebar" routerLinkActive="active-link">კატეგორიები</a>
-      <a routerLink="/doctorsList" routerLinkActive="active-link">ექიმები</a>
+<div class="panel" *ngIf="isAdmin">
+  <div class="reg-cat-doc">
+    <div class="burger-icon">
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
-    <div class="switch-roles">
-      <a href="/">ექიმი</a>
-      <a href="/">მომხმარებელი</a>
-      <a href="">ადმინისტრატორი</a>
-    </div>
+    <a routerLink="/addDoctor" routerLinkActive="active-link">რეგისტრაცია</a>
+    <a routerLink="/doctorsList" routerLinkActive="active-link">კატეგორიები</a>
+    <a routerLink="/doctorsList" routerLinkActive="active-link">ექიმები</a>
+  </div>
+  <div class="switch-roles">
+    <a routerLink="/addDoctor">ექიმი</a>
+    <a routerLink="/addPatient">მომხმარებელი</a>
+    <a href="/addUser">ადმინისტრატორი</a>
   </div>
 </div>
+

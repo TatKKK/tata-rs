@@ -1,4 +1,11 @@
 .container{
    padding:50px 0;
-   
+   display:flex;   
+   gap:4em;
+}
+.app-sidebar{
+   flex:1;
+}
+.content{
+   flex:3.17;
 }

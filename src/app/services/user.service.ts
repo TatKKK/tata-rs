@@ -4,6 +4,7 @@ import { Observable, of, throwError, tap, catchError } from 'rxjs';
 import { User } from '../models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from './auth/auth.service';
+import { MessageService } from 'primeng/api'
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class UserService {
   user!:User;
 
   constructor(
+    private messageService:MessageService,
     public snackBar:MatSnackBar,
     private http:HttpClient,
     private authService:AuthService,
@@ -28,6 +30,45 @@ export class UserService {
     };
   }
 
+
+
+  addUser(formData: any): Observable<any> {
+    let token = this.authService.getToken()
+    if (!this.authService.isAdmin()) {
+      this.messageService.add({
+        key: 'tl',
+        severity: 'error',
+        summary: 'Unauthorized',
+        detail: 'Not authorized',
+        life: 2000
+      })
+    }
+
+    if (!this.authService.getToken()) {
+      this.messageService.add({
+        key: 'tl',
+        severity: 'warn',
+        summary: 'Unauthorized',
+        detail: 'No Token',
+        life: 2000
+      })
+    }
+
+    let httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      })
+    }
+
+    return this.http
+      .post<any>('https://localhost:7042/api/Users/AddUser', formData, httpOptions)
+      .pipe(
+        catchError(error => {
+          console.error('Error adding admin:', error)
+          return throwError(() => error)
+        })
+      )
+  }
   getUsersList():User[]{
     return this.users;
   }
@@ -45,7 +86,7 @@ export class UserService {
   }
 
   getUser(userId:number):Observable<User>{
-    return this.http.get<User>(`https://localhost:7042/api/Users/userby/${userId}`, this.getHttpOptions() )
+    return this.http.get<User>(`https://localhost:7042/api/Users/user/${userId}`, this.getHttpOptions() )
     .pipe(
       tap(user=>console.log(user)),
       catchError(this.handleError<User>('getUser'))

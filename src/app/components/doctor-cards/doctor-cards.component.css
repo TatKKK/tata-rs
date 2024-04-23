@@ -20,6 +20,7 @@
     background-color:#FFFFFF;
     transition:0.3s ease-in;
     position:relative;
+    box-shadow:var(--shadow-small);
   }
   .card:hover{
     box-shadow: 0 2px 4px 0 rgba(51, 118, 199, 0.2), 0 3px 10px 0 rgba(148, 171, 233, 0.19);  

@@ -1,0 +1,11 @@
+.doc-name{
+    color:var(--color-active);
+    margin-bottom:5px;
+}
+.doc-category{
+    margin:5px 0;
+}
+.rating span{
+    opacity:1;
+    margin-top:5px;
+}

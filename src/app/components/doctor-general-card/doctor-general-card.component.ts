@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core'
 import { DoctorsService } from '../../services/doctors.service'
-import { ChangeDetectorRef } from '@angular/core'
 import { Doctor } from '../../models/doctor.model'
 import { AppointmentsService } from '../../services/appointments.service'
 
@@ -17,7 +16,6 @@ export class DoctorGeneralCardComponent {
   constructor (
     public doctorsService: DoctorsService,
     public appointmentsService: AppointmentsService,
-    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit (): void {

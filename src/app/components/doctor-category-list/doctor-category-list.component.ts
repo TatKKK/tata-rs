@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { DoctorsService } from '../../services/doctors.service'
 import { Doctor } from '../../models/doctor.model'
@@ -19,6 +19,7 @@ export class DoctorCategoryListComponent implements OnInit {
   faDelete = faDeleteLeft
   doctors: Doctor[] = []
   category!: string
+  doctorData:any;
 
   userRole: string = ''
 
@@ -104,15 +105,19 @@ export class DoctorCategoryListComponent implements OnInit {
     } else {
       this.router.navigate(['/editPage', doctor.Id])
     }
-    this.doctorsService.editDoctor(doctor).subscribe({
-      next: () => {
-        this.doctorsService.doctors = this.doctorsService.doctors.filter(
-          doc => doc.id! == doctor.Id
-        )
-      },
-      error: error => {
-        console.error('Error editing doctor:', error)
-      }
-    })
+    if(doctor.Id){
+      this.doctorsService.editDoctor(doctor.Id, this.doctorData).subscribe({
+        next: () => {
+          this.doctorsService.doctors = this.doctorsService.doctors.filter(
+            doc => doc.id! == doctor.Id
+          )
+        },
+        error: error => {
+          console.error('Error editing doctor:', error)
+        }
+      })
+    }
   }
+
+  
 }
