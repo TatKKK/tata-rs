@@ -285,7 +285,8 @@ export class BookingCalendarComponent implements OnInit {
       this.patientId = Id
       console.log('patientId', this.patientId)
     } else {
-      //admins davamateb
+      this.doctorId=11;
+      this.patientId=4;
     }
 
     const newAppointment = {
