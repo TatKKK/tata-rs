@@ -1,12 +1,15 @@
-            <div class="container-content">
-                <app-doctor-general-card *ngIf="doctor" [doctor]="doctor" ></app-doctor-general-card>
-                <!-- <app-doctor-admin *ngIf="userRole === 'admin' && doctor" [doctor]="doctor"></app-doctor-admin> -->
-                
-                <app-booking-calendar *ngIf="doctorId &&Id !==null" [doctorId]="doctorId"
-                [appointments]="appointments" [id]="Id"></app-booking-calendar>
-
-                 <app-booking-calendar *ngIf="doctorId&&userRole !=='admin'" [doctorId]="doctorId"
-                [appointments]="appointments"></app-booking-calendar>
-                
-            </div>        
+<div class="container-content">
+    <app-doctor-general-card *ngIf="doctor" [doctor]="doctor" ></app-doctor-general-card>
+    <!-- <app-doctor-admin *ngIf="userRole === 'admin' && doctor" [doctor]="doctor"></app-doctor-admin> -->
     
+    <app-booking-calendar *ngIf="doctorId &&Id ===null" [doctorId]="doctorId"
+    [appointments]="appointments" [id]="Id"></app-booking-calendar>
+
+   
+    <app-booking-calendar *ngIf="doctorId &&Id !==null &&userRole !== 'admin'" [doctorId]="doctorId"
+    [appointments]="appointments" [id]="Id"></app-booking-calendar>
+
+     <app-booking-calendar *ngIf="doctorId&&userRole ==='admin'" [doctorId]="doctorId"
+    [appointments]="appointments"></app-booking-calendar>
+    
+</div>        

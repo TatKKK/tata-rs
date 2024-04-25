@@ -30,8 +30,7 @@
 </div>
 
 <div class="load-more-doctors" *ngIf="filteredDoctors.length > 0">
-  <button (click)="loadNextPage()" [disabled]="currentPage * pageSize >= totalCount">
+  <button (click)="currentPage > 1 ? loadPrevPage() : loadNextPage()"  [disabled]="currentPage * pageSize >= totalCount&&currentPage === 1">
     <span>სრულ</span><span class="underline-text">ად ნახვა</span>
   </button>
-
 </div>

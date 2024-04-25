@@ -5,7 +5,7 @@
   <p-toast position="top-left" key="tl"></p-toast>
   <p-scrollPanel [style]="{width: '100%', height: '400px'}">
    <div table-container [style]="{width:'100%'}">
-    <table class="doc-list">
+    <table class="doc-category-list">
       <thead>
         <tr>
           <th>სახელი</th>
@@ -18,7 +18,6 @@
       <tbody>
         <tr *ngFor="let doctor of doctors">
           <td> <a [routerLink]="['/doctorGeneralView', doctor.Id]">  {{ doctor.Fname + ' ' + doctor.Lname }}</a></td>         
-          
           <td>{{ doctor.Category }}</td>
           <td><img  [src]="'https://localhost:7042' + doctor.ImageUrl" alt="ar gaixsna" class="doctor-image"></td>
           <td>
@@ -40,8 +39,7 @@
                 <rect width="26" height="26" fill="white"/>
                 </clipPath>
                 </defs>
-                </svg>
-            
+                </svg>            
               </button>
             <button (click)="deleteDoctor(doctor, $event)" class="delete-button"> 
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,6 +59,4 @@
     </table>
   </div>
   </p-scrollPanel>
-  
-  
 </div>

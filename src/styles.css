@@ -397,15 +397,11 @@ font-weight: 400;
 line-height: 19.2px;
 text-align: left;
 color:var(--color-primary);
-
-}
-
 }
 
 .custom-book .p-dialog .p-dialog-content {
   display: flex;
-  flex-direction: column;
- 
+  flex-direction: column; 
 }
 
 .custom-book .p-footer {
@@ -422,7 +418,21 @@ color:var(--color-primary);
   font-weight: normal;
 }
 
+.custom-details .p-dialog-header .p-dialog-title{
+  margin-left:0;
+  color:#3ACF99;
+  font-weight:700;
+  font-size:1.25rem;
+  padding-bottom:0;
+}
+.custom-details  p{
+  color:var(--color-primary);
+}
+.custom-details .p-dialog-content {
+  padding-bottom: 20px;
+  text-align: center;
 
+}
 /*--- SCROLLBAR */
 
 .p-scrollpanel-bar-y{

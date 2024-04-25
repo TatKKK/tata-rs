@@ -76,10 +76,10 @@ public appointments:Appointment[]=[];
     return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/users/${userId}`).pipe(
       map(appointments => appointments.map(a => {
         if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime);
+          a.StartTime = new Date(a.StartTime+'Z');
         }
         if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime);
+          a.EndTime = new Date(a.EndTime+'Z');
         }
         return a;
       }))
@@ -89,10 +89,10 @@ public appointments:Appointment[]=[];
     return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/doctor/${doctorId}`).pipe(
       map(appointments => appointments.map(a => {
         if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime);
+          a.StartTime = new Date(a.StartTime+'Z');
         }
         if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime );
+          a.EndTime = new Date(a.EndTime +'Z');
         }
         return a;
       }))
@@ -103,10 +103,10 @@ public appointments:Appointment[]=[];
     return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/patient/${patientId}`).pipe(
       map(appointments => appointments.map(a => {
         if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime);
+          a.StartTime = new Date(a.StartTime+'Z');
         }
         if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime);
+          a.EndTime = new Date(a.EndTime+'Z');
         }
         return a;
       }))
@@ -116,10 +116,10 @@ public appointments:Appointment[]=[];
     return this.http.get<Appointment[]>(`${this.apiUrl}/Get_Appointments`).pipe(
       map(appointments => appointments.map(a => {
         if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime);
+          a.StartTime = new Date(a.StartTime + 'Z');
         }
         if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime);
+          a.EndTime = new Date(a.EndTime+'Z');
         }
         return a;
       }))

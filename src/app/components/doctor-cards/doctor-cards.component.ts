@@ -42,7 +42,6 @@ export class DoctorCardsComponent implements OnInit {
 
   filteredDoctors: Doctor[] = []
 
-
   token:string="";  
   isAdmin:boolean=false;  
   userRole:string='';
@@ -83,21 +82,18 @@ export class DoctorCardsComponent implements OnInit {
     if (!filterTerm) {
       this.filteredDoctors = this.doctors
     } else {
-      const filterWords = filterTerm.toLowerCase().split(/\s+/)
-
+      const filterWords = filterTerm.toLowerCase().split(/\s+/);
       this.filteredDoctors = this.doctors.filter(doctor => {
-        const doctorFname = doctor.Fname?.toLowerCase() || ''
-        const doctorCategory = (doctor.Category || '').toLowerCase()
+        const doctorFname = doctor.Fname?.toLowerCase() || '';
+        const doctorCategory = (doctor.Category || '').toLowerCase();
 
         return filterWords.some(
           word => doctorFname.includes(word) || doctorCategory.includes(word)
         )
       })
     }
-
-    const isDataFound = this.filteredDoctors.length > 0
-
-    this.filterService.updateDataFoundState(isDataFound)
+    const isDataFound = this.filteredDoctors.length > 0;
+    this.filterService.updateDataFoundState(isDataFound);
   }
 
   loadDoctorsPaginated (pageNumber: number, pageSize: number): void {
@@ -144,12 +140,18 @@ export class DoctorCardsComponent implements OnInit {
     }
   }
 
+  
+  loadPrevPage (): void {
+    if (this.currentPage >1) {
+      this.loadDoctorsPaginated(--this.currentPage, this.pageSize)
+    }
+  }
+
   handleClick(doctor: Doctor, event: MouseEvent): void {
     event.preventDefault();
     if(doctor.Id){
       this.incrementViewCount(doctor.Id);
-    }   
-    
+    }       
     if (doctor.Id) {
       this.appointmentsService.getAppointmentsByDoctor(doctor.Id)
   .subscribe({
@@ -160,11 +162,9 @@ export class DoctorCardsComponent implements OnInit {
       console.error('Error fetching appointments:', error);
     }
   });
-
     }
   }
-  
- 
+   
   openDoctorDialog(doctor: Doctor, appointments: Appointment[]): void {
     console.log("Opening dialog:", doctor);
     const ref = this.dialogService.open(ViewDoctorComponent, {
@@ -174,7 +174,7 @@ export class DoctorCardsComponent implements OnInit {
         appointments: appointments 
       },
       header: '',
-      width: '70%',
+      width: 'fit-content',
       contentStyle: {"max-height": "100vh", "overflow": "auto"},
       draggable: true,
       resizable: true,
@@ -186,7 +186,7 @@ export class DoctorCardsComponent implements OnInit {
     });
   }
     
-  closeDialog():void{
-    this.display=false;
-  }
+  // closeDialog():void{
+  //   this.display=false;
+  // }
 }

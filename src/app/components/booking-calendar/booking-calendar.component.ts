@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core'
+import { Component, OnInit, Input, SimpleChanges, OnChanges} from '@angular/core'
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog'
 import { LoginPromptComponent } from '../login-prompt/login-prompt.component'
@@ -11,32 +11,33 @@ import { Day } from '../../models/appointment.model'
 import { ConfirmationService } from 'primeng/api'
 import { MessageService } from 'primeng/api'
 import { Router } from '@angular/router'
+import { AppointmentDetailsComponent } from '../appointment-details/appointment-details.component'
 
 @Component({
   selector: 'app-booking-calendar',
   templateUrl: './booking-calendar.component.html',
   styleUrl: './booking-calendar.component.css'
 })
-export class BookingCalendarComponent implements OnInit {
- 
+export class BookingCalendarComponent implements OnInit { 
   left = faAngleLeft
   right = faAngleRight
 
   @Input() doctorId!: number
   @Input() userId!: number
-  @Input() appointments: Appointment[] = []
-  @Input() appointment!: Appointment
+  @Input() appointments: Appointment[] = [] //doctor-cards -dan gadmoaqvs dialogit
+  // @Input() appointment!: Appointment
+  appointment!:Appointment
   patientId!: number
 
-  //logged in user id
-  @Input() id!: number
+  // //logged in user id
+  // @Input() id!: number
 
   days: Day[] = []
-  workingHours = Array.from({ length: 9 }, (_, i) => 9 + i) // 9-17
+  workingHours = Array.from({ length: 9 }, (_, i) => 9 + i)
   currentWeekStart: Date = new Date()
   currentDate: Date = new Date()
 
-  userRole!: string
+  userRole: string =null || ""
   isDoctor: boolean = false
   isPatient: boolean = false
   isAdmin: boolean = false
@@ -61,24 +62,34 @@ export class BookingCalendarComponent implements OnInit {
     return this.router.url.includes('/userPage/')
   }
 
-  ngOnInit () {
-    this.appointments
-    this.initializeDays()
-    this.goToCurrentWeek()
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['appointments'] && !changes['appointments'].firstChange) {
+      this.initializeDays(); 
+      console.log('Appointments have been updated:', this.appointments);
+    }
+  }
 
-    this.authService.getUserRole().subscribe(role => {
-      this.userRole = role
+  ngOnInit () {
+    
+    this.appointments;
+    this.initializeDays();
+    this.goToCurrentWeek();
+
+    // this.authService.getUserRole().subscribe(role => {
+    //   this.userRole = role
    
-      if (role === 'patient' || role === 'doctor' || role === 'admin') {
-        this.isLoggedIn = true
-      }
-    })
-    localStorage.getItem('userRole');
+    //   if (role === 'patient' || role === 'doctor' || role === 'admin') {
+    //     this.isLoggedIn = true
+    //   }
+    // })
+    
+const role = localStorage.getItem('userRole');
+  
    
-    if (this.userRole=== 'patient' || this.userRole === 'doctor' || this.userRole === 'admin') {
+    if (role=== 'patient' || role === 'doctor' || role === 'admin') {
       this.isLoggedIn = true
     }
-
+console.log(this.isLoggedIn);
   }
 
   constructor (
@@ -87,7 +98,7 @@ export class BookingCalendarComponent implements OnInit {
     private messageService: MessageService,
     public dialogRef: DynamicDialogRef,
     private snackBar: MatSnackBar,
-    private authService: AuthService,
+    // private authService: AuthService,
     public appointmentService: AppointmentsService,
     private confirmationService: ConfirmationService
   ) {}
@@ -106,7 +117,6 @@ export class BookingCalendarComponent implements OnInit {
     this.currentDate = new Date(this.currentWeekStart)
     this.initializeDays()
   }
-
   goToPreviousWeek () {
     this.currentWeekStart.setDate(this.currentWeekStart.getDate() - 1)
     this.currentDate = new Date(this.currentWeekStart)
@@ -158,15 +168,13 @@ export class BookingCalendarComponent implements OnInit {
     }
   }
 
-  // //my bookings
-  isBookedByMe (day: Day, hour: number): boolean {
+  isBookedByMe (day: Day, hour: number, appointment:Appointment): boolean {
     return day.appointments.some(appointment => {
       const appointmentHour = appointment.StartTime?.getHours()
       const isSameHour = appointmentHour === hour
       const isUserAppointment =
         appointment.PatientId === this.userId ||
         appointment.DoctorId === this.userId
-
       return isSameHour && isUserAppointment
     })
   }
@@ -189,25 +197,13 @@ export class BookingCalendarComponent implements OnInit {
     )
   }
 
-  getClassForSlot (day: Day, hour: number): string {
-    if (this.isBookedByMe(day, hour)) {
-      return 'my-booking'
-    } else if (this.isAppointmentBooked(day, hour)) {
-      return 'booked'
-    } else if (day.isWeekend) {
-      return 'weekend'
-    } else if (day.isDayOff) {
-      return 'day-off'
-    } else {
-      return 'freeSlot'
-    }
-  }
-  openDialogBasedOnAuth (day: Day, hour: number, event: MouseEvent) {
-    event.preventDefault()
+
+   openDialogBasedOnAuth (day: Day, hour: number, event: MouseEvent) {
+    event.preventDefault();
     if (this.isLoggedIn) {
       this.openBookingSubmitDialog(day, hour, event)
     } else {
-      this.openLogDialog()
+      this.openLogDialog();
     }
   }
 
@@ -219,11 +215,11 @@ export class BookingCalendarComponent implements OnInit {
       dismissableMask: true,
       modal: true
     })
-
     ref.onClose.subscribe(() => {
       this.closeMainDialog()
     })
   }
+
   closeMainDialog (): void {
     if (this.dialogRef) {
       this.dialogRef.close()
@@ -265,17 +261,19 @@ export class BookingCalendarComponent implements OnInit {
 
     ref.onClose.subscribe(notes => {
       if (notes) {
-        this.createAppointment(day, hour, notes)
-        this.closeMainDialog()
+        this.createAppointment(day, hour, notes);
+        this.closeMainDialog();
       }
     })
   }
 
   createAppointment (day: Day, hour: number, notes: string): void {
-    const startDate = new Date(day.date)
-    startDate.setHours(hour, 0, 0, 0)
-    const idString = localStorage.getItem('userId')
-    const Id = idString !== null ? parseInt(idString, 10) : null
+    const startDate = new Date(day.date);
+    startDate.setHours(hour, 0, 0, 0);
+
+    //shemosulis id2
+    const idString = localStorage.getItem('userId');
+    const Id = idString !== null ? parseInt(idString, 10) : null;
 
     const role = localStorage.getItem('userRole')
 
@@ -305,39 +303,50 @@ export class BookingCalendarComponent implements OnInit {
 
     this.appointmentService.createAppointment(newAppointment).subscribe({
       next: appointment => {
-        console.log('Appointment booked successfully:', appointment)
-        this.snackBar.open('Appointment booked successfully', 'Close', {
+        const message = `Appointment booked successfully for ${appointment.StartTime}`;
+        this.snackBar.open(message, 'Close', {
           duration: 5000
         })
-        this.refreshAppointments()
+        this.refreshAppointments();
       },
       error: error => {
         console.error('Error booking appointment:', error)
         this.snackBar.open('Failed to book appointment', 'Close', {
-          duration: 5000
+          duration: 5000,
+          panelClass:['error-Snackbar']
         })
       }
     })
   }
 
   refreshAppointments () {
-    const idString = localStorage.getItem('userId')
-    const Id = idString !== null ? parseInt(idString, 10) : null
+    const idString = localStorage.getItem('userId');
+    const Id = idString !== null ? parseInt(idString, 10) : null;
     if (Id !== null) {
       this.appointmentService.getAppointmentsByUser(Id).subscribe({
         next: appointments => {
           this.appointments = appointments
         },
         error: error => {
-          console.error('Error fetching appointments:', error)
+          this.snackBar.open('Error fetching appointment', 'Close', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          })
         }
       })
     } else {
-      console.error('Cannot fetch appointments, userId is undefined')
+      this.snackBar.open('Error fetching appointment, userId is undefined', 'Close', {
+        duration: 5000,
+        panelClass:['error-snackbar']
+      })
     }
   }
 
-  openDeleteDialog (day: Day, hour: number) {
+  openDeleteDialog (appointment:Appointment) {
+    if (!appointment || !appointment.Id) {
+      console.error('Appointment is undefined or does not have an Id.');
+      return;
+    }
     this.confirmationService.confirm({
       message: 'გსურთ ჯავშნის წაშლა?',
       acceptLabel: 'დიახ',
@@ -345,64 +354,96 @@ export class BookingCalendarComponent implements OnInit {
       header: '',
       icon: '',
       accept: () => {
-        this.onBookedSlotClick(day, hour)
+        this.deleteAppointment(appointment);
       }
     })
   }
 
-  onBookedSlotClick (day: Day, hour: number): void {
-    // event.preventDefault()
-    const appointmentId = this.getAppointmentId(day, hour)
-    if (appointmentId) {
-      const appointmentToDelete = day.appointments.find(
-        a => a.Id === appointmentId
-      )
-      if (appointmentToDelete) {
-        this.deleteAppointment(appointmentToDelete)
-        this.refreshAppointments()
-        this.dialogRef.close
-      }
+  // onBookedSlotClick (day: Day, hour: number): void {
+  //   // event.preventDefault()
+  //   const appointmentId = this.getAppointmentId(day, hour)
+  //   if (appointmentId) {
+  //     const appointmentToDelete = day.appointments.find(
+  //       a => a.Id === appointmentId
+  //     )
+  //     if (appointmentToDelete) {
+  //       this.deleteAppointment(appointmentToDelete);
+  //       this.refreshAppointments();
+  //       this.dialogRef.close;
+  //     }
+  //   } else {
+  //     console.error('Appointment ID not found for the selected slot.')
+  //   }
+  // }
+
+  // deleteAppointment (appointment: Appointment) {
+  //   this.appointmentService.deleteAppointment(appointment).subscribe({
+  //     next: () => {
+  //       this.messageService.add({
+  //         severity: 'success',
+  //         summary: 'Info',
+  //         detail: 'Successfully deleted, jer ar gamochndeba imitom rom appointmentebi doctor-cards-დანაა გადმოტანილი da refreshს gasvla gamosvla unda ;( albat',
+  //         life: 7000
+  //       })
+  //     },
+  //     error: error => {
+  //       console.error('Failed to delete appointment:', error)
+  //     }
+  //   })
+  //   this.refreshAppointments() ;
+  // }
+
+  deleteAppointment(appointment: Appointment): void {
+    console.log(appointment.Id, 'app id');
+  this.appointmentService.deleteAppointment(appointment).subscribe({
+    next: () => {
+      
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Info',
+        detail: 'Appointment successfully deleted',
+        life: 7000
+      });
+      this.refreshAppointments();
+    },
+    error: error => {
+      console.error('Failed to delete appointment:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to delete appointment'
+      });
+    }
+  });
+}
+
+
+  // getAppointmentId (day: Day, hour: number): number | undefined {
+  //   console.log(`Looking for appointments at hour ${hour} on day`, day)
+  //   const appointment = day.appointments.find(a => {
+  //     const appointmentHour = a.StartTime?.getHours()
+  //     return appointmentHour === hour && a.IsBooked
+  //   })
+  //   if (appointment) {
+  //     return appointment.Id
+  //   } else {
+  //     return undefined
+  //   }
+  // }
+
+  getClassForSlot (day: Day, hour: number): string {
+    if (this.isBookedByMe(day, hour, this.appointment)) {
+      return 'my-booking'
+    } else if (this.isAppointmentBooked(day, hour)) {
+      return 'booked'
+    } else if (day.isWeekend) {
+      return 'weekend'
+    } else if (day.isDayOff) {
+      return 'day-off'
     } else {
-      console.error('Appointment ID not found for the selected slot.')
+      return 'freeSlot'
     }
   }
-
-  deleteAppointment (appointment: Appointment) {
-    this.appointmentService.deleteAppointment(appointment).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Info',
-          detail: 'Successfully deleted, jer ar gamochndeba imitom rom appointmentebi doctor-cards-დანაა გადმოტანილი da refreshს gasvla gamosvla unda ;( albat',
-          life: 7000
-        })
-      },
-      error: error => {
-        console.error('Failed to delete appointment:', error)
-      }
-    })
-    this.refreshAppointments() ;
-  }
-
-  getAppointmentId (day: Day, hour: number): number | undefined {
-    console.log(`Looking for appointments at hour ${hour} on day`, day)
-    const appointment = day.appointments.find(a => {
-      const appointmentHour = a.StartTime?.getHours()
-      console.log(
-        `Comparing against appointment at hour ${appointmentHour}:`,
-        a
-      )
-      return appointmentHour === hour && a.IsBooked
-    })
-    if (appointment) {
-      console.log('Matching appointment found:', appointment)
-      return appointment.Id
-    } else {
-      console.error('No matching appointment found for hour', hour)
-      return undefined
-    }
-  }
-
 
   getClassForButtons (): string {
     if (this.userRole === 'patient' || this.userRole === 'doctor') {
@@ -422,5 +463,22 @@ export class BookingCalendarComponent implements OnInit {
     } else {
       return 'calendar-buttons-col'
     }
+  }
+
+
+  //appointment details
+
+  appointmentData(appointment: Appointment) {
+    const ref = this.dialogService.open(AppointmentDetailsComponent, {
+      data: { appointment: appointment },
+      header: 'ვიზიტის დეტალები',
+      width: 'fit-content',
+      contentStyle: {"max-height": "100vh", "overflow": "auto"},
+      draggable: true,
+      resizable: true,
+      dismissableMask: true,
+      modal: true,
+      styleClass:'custom-details'
+    });
   }
 }

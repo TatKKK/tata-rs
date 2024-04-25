@@ -3,16 +3,14 @@
   <div class="mokledra">
     <div class="user-card">
       <div class="section-1">
-        <img [src]="'https://localhost:7042' + doctor.ImageUrl" alt="Doctor image" class="user-image">
-  
+        <img [src]="'https://localhost:7042' + doctor.ImageUrl" alt="Doctor image" class="user-image">  
         <h4 class="doc-name">{{ doctor.Fname }} {{ doctor.Lname }}</h4>
         <span><b>ექიმი</b></span>
         <h4>{{doctor.Category}}</h4>
         <span *ngFor="let filled of getStars(doctor?.Score); let i = index">`
           <i class="star" [class.filled]="filled">&#9733;</i>
         </span>
-      </div>
-     
+      </div>     
       <div class="section-2">
         <div class="card-element" *ngIf="isEditMode; else viewTemplate">
           <div class="edit-flex" >

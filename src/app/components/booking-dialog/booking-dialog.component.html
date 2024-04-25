@@ -1,12 +1,9 @@
 <form #appointmentForm="ngForm">
-  <div class="p-field">
-    
+  <div class="p-field">    
     <textarea id="Notes" [(ngModel)]="this.notes" name="Notes" required pInputTextarea
-    placeholder="აღწერა..." class="custom-ngTextArea"></textarea>
-  
+    placeholder="აღწერა..." class="custom-ngTextArea"></textarea>  
   </div>
 </form>
-<p-footer class="p-footer">
-  
+<p-footer class="p-footer">  
   <button type="button" pButton label="დაჯავშნა" (click)="onSubmit()" class="custom-ngBtn" autoFocus></button>
 </p-footer>

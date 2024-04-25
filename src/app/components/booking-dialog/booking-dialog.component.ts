@@ -9,17 +9,11 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class BookingDialogComponent {
   notes:string='';
-  display: boolean = true;
+  // display: boolean = true;
   
-  constructor( public dialogRef: DynamicDialogRef,    
-    )
-  {
-  
-  }
-  // onCancelClick(): void {
-  //   this.display = false;
-  // }
-  onSubmit():void{
+  constructor(public dialogRef: DynamicDialogRef){}
+ 
+   onSubmit():void{
     this.dialogRef.close(this.notes);
   }
 }

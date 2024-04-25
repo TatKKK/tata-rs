@@ -1,0 +1,6 @@
+<div *ngIf="appointment">
+<p> ID:{{appointment.Id}} </p>
+  <p>ექიმი: {{ appointment.DoctorId }}</p>
+  <p>დრო: {{ appointment.StartTime | date:'shortTime' }}</p>
+  <p>აღწერა: {{ appointment.Notes }} </p>
+</div>

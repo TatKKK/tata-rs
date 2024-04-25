@@ -53,6 +53,7 @@ import { DoctorGeneralViewComponent } from './pages/doctor-general-view/doctor-g
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonsComponent } from './components/buttons/buttons.component';
 import { AddAdminComponent } from './pages/add-admin/add-admin.component';
+import { AppointmentDetailsComponent } from './components/appointment-details/appointment-details.component';
 
 
 
@@ -86,6 +87,7 @@ import { AddAdminComponent } from './pages/add-admin/add-admin.component';
    ButtonsComponent,
    SidebarComponent,
    AddAdminComponent,
+   AppointmentDetailsComponent,
   
    
   ],
