@@ -41,17 +41,7 @@ public appointments:Appointment[]=[];
   private apiUrl = "https://localhost:7042/api/Appointments";
 
   createAppointment(newAppointment:Appointment): Observable<Appointment> {
-      let token=this.authService.getToken();    
-      if(!this.authService.getToken()){
-        console.log('No Token');
-      }
-      let httpOptions={
-        headers:new HttpHeaders({
-          'Authorization':`Bearer ${token}`
-        })
-      };
-
-    return this.http.post<Appointment>(`${this.apiUrl}/create`, newAppointment, httpOptions);
+    return this.http.post<Appointment>(`${this.apiUrl}/create`, newAppointment);
   }
 
   updateAppointmentStatus(appointment: Appointment, id: number): Observable<any> {
@@ -59,71 +49,21 @@ public appointments:Appointment[]=[];
   }
 
   deleteAppointment(appointment:Appointment): Observable<any> {
-    let token = this.authService.getToken();
-    if(!this.authService.getToken()){
-      console.log('No Token');
-    }
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': token ? `Bearer ${token}` : ''
-      })
-    };
-    return this.http.delete(`${this.apiUrl}/delete/${appointment.Id}`, httpOptions);
+    return this.http.delete(`${this.apiUrl}/delete/${appointment.Id}`);
   }
 
   getAppointmentsByUser(userId: number): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/users/${userId}`).pipe(
-      map(appointments => appointments.map(a => {
-        if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime+'Z');
-        }
-        if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime+'Z');
-        }
-        return a;
-      }))
-    );
+    return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/getUsers/${userId}`);
   }
   getAppointmentsByDoctor(doctorId: number): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/doctor/${doctorId}`).pipe(
-      map(appointments => appointments.map(a => {
-        if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime+'Z');
-        }
-        if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime +'Z');
-        }
-        return a;
-      }))
-    );
+    return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/getDoctor/${doctorId}`);
   }
 
   getAppointmentsByPatient(patientId: number): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/patient/${patientId}`).pipe(
-      map(appointments => appointments.map(a => {
-        if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime+'Z');
-        }
-        if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime+'Z');
-        }
-        return a;
-      }))
-    );
+    return this.http.get<Appointment[]>(`https://localhost:7042/api/Appointments/getPatient/${patientId}`);
   }
   getAllAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.apiUrl}/Get_Appointments`).pipe(
-      map(appointments => appointments.map(a => {
-        if (a.StartTime) {
-          a.StartTime = new Date(a.StartTime + 'Z');
-        }
-        if (a.EndTime) {
-          a.EndTime = new Date(a.EndTime+'Z');
-        }
-        return a;
-      }))
-    );
+    return this.http.get<Appointment[]>(`${this.apiUrl}/Get_Appointments`);
   }
 
   getTotal(){

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges} from '@angular/core'
+import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter} from '@angular/core'
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog'
 import { LoginPromptComponent } from '../login-prompt/login-prompt.component'
@@ -18,13 +18,16 @@ import { AppointmentDetailsComponent } from '../appointment-details/appointment-
   templateUrl: './booking-calendar.component.html',
   styleUrl: './booking-calendar.component.css'
 })
-export class BookingCalendarComponent implements OnInit { 
+export class BookingCalendarComponent implements OnInit, OnChanges{ 
   left = faAngleLeft
   right = faAngleRight
 
   @Input() doctorId!: number
   @Input() userId!: number
   @Input() appointments: Appointment[] = [] //doctor-cards -dan gadmoaqvs dialogit
+  @Output() appointmentDeleted = new EventEmitter<void>();
+
+  
   // @Input() appointment!: Appointment
   appointment!:Appointment
   patientId!: number
@@ -52,22 +55,25 @@ export class BookingCalendarComponent implements OnInit {
     new Date(2024, 4, 6)
   ]
 
-  // checkUserRole () {
-  //   this.isDoctor = this.userRole === 'doctor'
-  //   this.isPatient = this.userRole === 'patient'
-  //   this.isAdmin = this.userRole === 'admin'
-  // }
 
   isUserPage (): boolean {
     return this.router.url.includes('/userPage/')
   }
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['appointments'] && !changes['appointments'].firstChange) {
+  //     this.initializeDays(); 
+  //     console.log('Appointments have been updated:', this.appointments);
+  //   }
+  // }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['appointments'] && !changes['appointments'].firstChange) {
-      this.initializeDays(); 
-      console.log('Appointments have been updated:', this.appointments);
+    if (changes['appointments']) {
+      this.initializeDays();
+      console.log('days initialized?');
     }
   }
+  
 
   ngOnInit () {
     
@@ -359,52 +365,19 @@ console.log(this.isLoggedIn);
     })
   }
 
-  // onBookedSlotClick (day: Day, hour: number): void {
-  //   // event.preventDefault()
-  //   const appointmentId = this.getAppointmentId(day, hour)
-  //   if (appointmentId) {
-  //     const appointmentToDelete = day.appointments.find(
-  //       a => a.Id === appointmentId
-  //     )
-  //     if (appointmentToDelete) {
-  //       this.deleteAppointment(appointmentToDelete);
-  //       this.refreshAppointments();
-  //       this.dialogRef.close;
-  //     }
-  //   } else {
-  //     console.error('Appointment ID not found for the selected slot.')
-  //   }
-  // }
-
-  // deleteAppointment (appointment: Appointment) {
-  //   this.appointmentService.deleteAppointment(appointment).subscribe({
-  //     next: () => {
-  //       this.messageService.add({
-  //         severity: 'success',
-  //         summary: 'Info',
-  //         detail: 'Successfully deleted, jer ar gamochndeba imitom rom appointmentebi doctor-cards-დანაა გადმოტანილი da refreshს gasvla gamosvla unda ;( albat',
-  //         life: 7000
-  //       })
-  //     },
-  //     error: error => {
-  //       console.error('Failed to delete appointment:', error)
-  //     }
-  //   })
-  //   this.refreshAppointments() ;
-  // }
 
   deleteAppointment(appointment: Appointment): void {
     console.log(appointment.Id, 'app id');
   this.appointmentService.deleteAppointment(appointment).subscribe({
     next: () => {
-      
+      this.appointmentDeleted.emit();      
       this.messageService.add({
         severity: 'success',
         summary: 'Info',
         detail: 'Appointment successfully deleted',
         life: 7000
       });
-      this.refreshAppointments();
+     
     },
     error: error => {
       console.error('Failed to delete appointment:', error);
@@ -416,20 +389,6 @@ console.log(this.isLoggedIn);
     }
   });
 }
-
-
-  // getAppointmentId (day: Day, hour: number): number | undefined {
-  //   console.log(`Looking for appointments at hour ${hour} on day`, day)
-  //   const appointment = day.appointments.find(a => {
-  //     const appointmentHour = a.StartTime?.getHours()
-  //     return appointmentHour === hour && a.IsBooked
-  //   })
-  //   if (appointment) {
-  //     return appointment.Id
-  //   } else {
-  //     return undefined
-  //   }
-  // }
 
   getClassForSlot (day: Day, hour: number): string {
     if (this.isBookedByMe(day, hour, this.appointment)) {

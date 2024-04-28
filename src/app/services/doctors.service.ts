@@ -43,17 +43,7 @@ export class DoctorsService {
     this.currentDoctorId.next(doctorId)
   }
 
-  private getHttpOptions () {
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getToken()
-          ? `Bearer ${this.authService.getToken()}`
-          : ''
-      })
-    }
-  }
-
+  
   get DoctorsList (): Doctor[] {
     return this.doctorsG
   }
@@ -64,38 +54,15 @@ export class DoctorsService {
   getDoctors (): Observable<Doctor[]> {
     return this.http
       .get<Doctor[]>(
-        'https://localhost:7042/api/Doctors/docs',
-        this.getHttpOptions()
-      )
-      .pipe(
-        tap(doctors => {
-          this.DoctorsList = doctors
-        }),
-        catchError(this.handleError<Doctor[]>('getDoctors', []))
-      )
+        'https://localhost:7042/api/Doctors/docs'
+      );
   }
 
-  getDoctorByEmail (Email: String): Observable<Doctor> {
-    return this.http
-      .get<Doctor>(
-        `https://localhost:7042/api/Doctors/doctor/email/${Email}`,
-        this.getHttpOptions()
-      )
-      .pipe(
-        tap(doctor => console.log(doctor)),
-        catchError(this.handleError<Doctor>('getDoctor'))
-      )
-  }
+  
   getDoctor (id: number): Observable<Doctor> {
     return this.http
       .get<Doctor>(
-        `https://localhost:7042/api/Doctors/doctor/${id}`,
-        this.getHttpOptions()
-      )
-      .pipe(
-        tap(doctor => console.log(doctor)),
-        catchError(this.handleError<Doctor>('getDoctor'))
-      )
+        `https://localhost:7042/api/Doctors/doctor/${id}`);
   }
 
   getStars (score: number) {
@@ -103,98 +70,20 @@ export class DoctorsService {
   }
 
   addDoctor (formData: any): Observable<any> {
-    let token = this.authService.getToken()
-    if (!this.authService.isAdmin()) {
-      this.messageService.add({
-        key: 'tl',
-        severity: 'error',
-        summary: 'Unauthorized',
-        detail: 'Not authorized',
-        life: 2000
-      })
-    }
-
-    if (!this.authService.getToken()) {
-      this.messageService.add({
-        key: 'tl',
-        severity: 'warn',
-        summary: 'Unauthorized',
-        detail: 'No Token',
-        life: 2000
-      })
-    }
-
-    let httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${token}`
-      })
-    }
-
     return this.http
-      .post<any>('https://localhost:7042/api/Doctors', formData, httpOptions)
-      .pipe(
-        catchError(error => {
-          console.error('Error adding doctor:', error)
-          return throwError(() => error)
-        })
-      )
+      .post<any>('https://localhost:7042/api/Doctors', formData);
   }
 
-  editDoctor(id: number, doctorData:any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authService.getToken()}`
-    });
+  editDoctor(id: number, doctorData:any): Observable<any> {    
 
-    return this.http.put(`https://localhost:7042/api/Doctors/${id}`, JSON.stringify(doctorData), { headers })
-      .pipe(
-        catchError(error => {
-          console.error('Error updating doctor:', error);
-          return throwError(() => new Error('Failed to edit doctor'));
-        })
-      );
+    return this.http.put(`https://localhost:7042/api/Doctors/${id}`, JSON.stringify(doctorData));
   }
 
-  deleteDoctor (doctor: Doctor): Observable<any> {
-    let token = this.authService.getToken()
-    if (!this.authService.isAdmin()) {
-      return throwError(() => new Error('Unauthorized'))
-    }
-
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: token ? `Bearer ${token}` : ''
-      })
-    }
-
-    const url = `https://localhost:7042/api/Doctors/deletedoctor/${doctor.Id}`
-    return this.http.delete<any>(url, httpOptions).pipe(
-      catchError(error => {
-        console.error('Error deleting doctor', error)
-        return throwError(() => error)
-      })
-    )
+  deleteDoctor (doctor: Doctor): Observable<any> {    
+    return this.http.delete<any>(`https://localhost:7042/api/Doctors/deletedoctor/${doctor.Id}`);
   }
 
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`)
-
-      if (error instanceof HttpErrorResponse) {
-        console.error(
-          `Backend returned code ${error.status}, body was: ${error.error}`
-        )
-      }
-
-      this.log(`${operation} failed: ${error.message}`)
-
-      return of(result as T)
-    }
-  }
-  private log (message: string) {
-    console.log(message)
-  }
+ 
   getDoctorsByCategory (category: string): Observable<Doctor[]> {
     return this.http.get<Doctor[]>(
       `https://localhost:7042/api/Doctors/category/${category}`
@@ -207,34 +96,22 @@ export class DoctorsService {
   set PaginatedDoctorsResult (value: PaginatedDoctorResult) {
     this._paginatedDoctorsResult = value
   }
-  getDoctorsPaginated (
+  getDoctorsPaginated(
     pageNumber: number = 1,
     pageSize: number = 6
   ): Observable<PaginatedDoctorResult> {
     let params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
-      .set('pageSize', pageSize.toString())
+      .set('pageSize', pageSize.toString());
 
     let httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       params: params
-    }
-
-    return this.http
-      .get<PaginatedDoctorResult>(
-        'https://localhost:7042/api/Doctors/docsPaginate',
-        httpOptions
-      )
-      .pipe(
-        tap(response => {
-          console.log('getDoctorsPaginated response:', response)
-          this._paginatedDoctorsResult = response
-        }),
-        catchError(
-          this.handleError<PaginatedDoctorResult>('getDoctorsPaginated')
-        )
-      )
+    };
+  
+    return this.http.get<PaginatedDoctorResult>(
+      'https://localhost:7042/api/Doctors/docsPaginate',httpOptions);
   }
+  
 
   refreshDoctors (): void {
     this.getDoctors().subscribe(doctors => {

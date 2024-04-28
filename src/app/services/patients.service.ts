@@ -28,86 +28,25 @@ export class PatientsService {
     this.patientsG=list;
   }
   
-  private getHttpOptions() {
-    const token = this.authService.getToken(); 
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': token ? `Bearer ${token}` : ''
-      })
-    };
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`);
-      return of(result as T);
-    };
-  }
-
-  private log(message: string) {
-    console.log(message);
-  }
-
 getPatients(): Observable<Patient[]> {
-  return this.http.get<Patient[]>("https://localhost:7042/api/Patients", this.getHttpOptions())
-    .pipe(
-      tap(patients => {
-        this.PatientsList = patients;
-        console.log(patients);
-      }),
-      catchError(this.handleError<Patient[]>('getPatients', []))
-    );
+  return this.http.get<Patient[]>("https://localhost:7042/api/Patients");
 }
 
-getPatientByEmail(Email: string): Observable<Patient> {
-  return this.http.get<Patient>(`https://localhost:7042/api/Patients/patient/email/${Email}`, this.getHttpOptions())
-    .pipe(
-      tap(patient => console.log(patient)),
-      catchError(this.handleError<Patient>('getPatient'))
-    );
-}
 getPatient(id: number): Observable<Patient> {
-  return this.http.get<Patient>(`https://localhost:7042/api/Patients/patient/${id}`, this.getHttpOptions())
-    .pipe(
-      tap(patient => console.log(patient)),
-      catchError(this.handleError<Patient>('getPatient'))
-    );
+  return this.http.get<Patient>(`https://localhost:7042/api/Patients/patient/${id}`);
 }
   
   addPatient(formData: any): Observable<any> {    
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  return this.http.post<any>("https://localhost:7042/api/Patients", formData)
-    .pipe(
-      catchError(error => {
-        console.error('Error adding patient:', error);
-        return throwError(() => error);
-      })
-    );
+  return this.http.post<any>("https://localhost:7042/api/Patients", formData);
     }
  
     
     editPatient(formData:any):Observable<any>{
-      return this.http.put<any>("https://localhost:7042/api/Patients", formData, this.getHttpOptions())
-      .pipe(
-        catchError(error => {
-          console.error('Error editing patient:', error);
-          return throwError(() => error);
-        })
-      );
+      return this.http.put<any>("https://localhost:7042/api/Patients", formData);
     }
 
 deletePatient(patient: Patient): Observable<any> {
-  const url = `https://localhost:7042/api/Patients/${patient.Id}`;
-  return this.http.delete<any>(url, this.getHttpOptions())
-    .pipe(
-      catchError(error => {
-        console.error('Error deleting patient', error);
-        return throwError(() => error);
-      })
-    );
+  return this.http.delete<any>(`https://localhost:7042/api/Patients/${patient.Id}`);
 }
 
 createActivationCode(Email: string): Observable<any> {
@@ -124,7 +63,6 @@ getActivationCodeByEmail(email: string): Observable<ActivationCode> {
   return this.http.get<ActivationCode>(`https://localhost:7042/api/Codes/getCode?email=${email}`);
 }
 
-// VEREIFY !!!
 
 verifyActivationCode(email:String, activationCode: string): Observable<boolean> {  
   const url = 'https://localhost:7042/api/Codes/verify';

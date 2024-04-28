@@ -100,17 +100,21 @@ export class AddPatientComponent implements OnInit {
           const loginInfo: Login = { email: email, password: password }
           this.authService.authenticate(loginInfo).subscribe({
             next: authRes => {
-              const userId = this.authService.getUserId();
-            if (userId) {
-              this.router.navigate(['/userPage', userId]);
-            } else {
-              console.error('User ID not found after authentication');
-            }
-          },
+                const userId = this.authService.getUserId();
+                if (userId) {
+                    this.router.navigate(['/userPage', userId]);
+                } else {
+                    console.error('User ID not found after authentication');
+                }
+            },
             error: authErr => {
-              console.error('Authentication error:', authErr)
+                console.error('Authentication error:', authErr);
+                this.snackBar.open('Authentication failed: ' + authErr.message, 'Close', {
+                    duration: 5000
+                });
             }
-          })
+        });
+        
         },
         error: err => {
           console.error('Error response', err.error)

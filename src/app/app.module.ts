@@ -54,7 +54,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { ButtonsComponent } from './components/buttons/buttons.component';
 import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { AppointmentDetailsComponent } from './components/appointment-details/appointment-details.component';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MainInterceptor } from './interceptors/main-interceptor';
+import { DatesInterceptor } from './interceptors/dates-interceptor';
 
 
 
@@ -87,9 +89,7 @@ import { AppointmentDetailsComponent } from './components/appointment-details/ap
    ButtonsComponent,
    SidebarComponent,
    AddAdminComponent,
-   AppointmentDetailsComponent,
-  
-   
+   AppointmentDetailsComponent 
   ],
   imports: [
     BrowserModule,
@@ -116,9 +116,10 @@ import { AppointmentDetailsComponent } from './components/appointment-details/ap
     ToastModule,
     ConfirmDialogModule,
     CalendarModule
-
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'ka-GE' }, 
+  providers: [{ provide: LOCALE_ID, useValue: 'ka-GE' },
+  { provide: HTTP_INTERCEPTORS, useClass: MainInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: DatesInterceptor, multi: true },
   DialogService, DynamicDialogRef, MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })

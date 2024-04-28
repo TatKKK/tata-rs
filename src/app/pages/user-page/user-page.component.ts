@@ -7,6 +7,8 @@ import { User } from '../../models/user.model'
 import { Appointment } from '../../models/appointment.model'
 import { Subject, takeUntil } from 'rxjs'
 import { switchMap } from 'rxjs/operators';
+import { MessageService } from 'primeng/api'
+
 
 @Component({
   selector: 'app-user-page',
@@ -27,6 +29,7 @@ export class UserPageComponent implements OnInit {
   private destroy$ = new Subject<void>();
 
   constructor(
+    private messageService:MessageService,
     private authService: AuthService,
     private route: ActivatedRoute,
     public appointmentsService: AppointmentsService,
@@ -78,14 +81,39 @@ export class UserPageComponent implements OnInit {
   }
 
   
-  private fetchAppointments(userId: number): void {
+
+  deleteAppointment(appointment: Appointment): void {
+    this.appointmentsService.deleteAppointment(appointment).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Info',
+          detail: 'Appointment successfully deleted',
+          life: 7000
+        });
+        if (this.userId) {
+          this.fetchAppointments(this.userId); // Fetch the updated appointments
+        }
+      },
+      error: error => {
+        console.error('Failed to delete appointment:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to delete appointment'
+        });
+      }
+    });
+  }
+  
+  fetchAppointments(userId: number): void {
     this.appointmentsService.getAppointmentsByUser(userId).subscribe({
       next: appointments => {
-        this.appointments = appointments;
+        this.appointments = [...appointments]; // Assigning a new reference to trigger change detection
         this.totalAppointments = appointments.length;
-        localStorage.setItem('appointments', JSON.stringify(appointments));
       },
       error: err => console.error('Error fetching appointments:', err)
     });
   }
+  
 }
